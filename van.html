@@ -118,6 +118,24 @@ body{
   border-color:var(--pencil-blue);
 }
 
+.grade-row{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.grade-chip{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.05rem;
+  padding:8px 18px;
+  border-radius:999px;
+  border:1.5px solid var(--highlight-yellow);
+  background:#FFF6E0;
+  color:#A0701B;
+  cursor:pointer;
+  user-select:none;
+}
+.grade-chip.active{
+  background:var(--highlight-yellow);
+  color:#5A4313;
+  border-color:var(--highlight-yellow);
+}
+
 .problem-card{
   background:#FCFBF7;
   border:1.5px dashed var(--grid-line);
@@ -254,6 +272,10 @@ body{
       <input type="text" id="player-name" class="name-input" placeholder="Nhập tên của bé...">
     </div>
     <div class="start-field">
+      <label>Chọn lớp muốn ôn:</label>
+      <div class="grade-row" id="start-grade-row"></div>
+    </div>
+    <div class="start-field">
       <label>Chọn chủ đề muốn luyện:</label>
       <div class="tabs" id="start-tabs"></div>
     </div>
@@ -276,6 +298,7 @@ body{
       </div>
     </div>
 
+    <div class="grade-row" id="grade-row"></div>
     <div class="tabs" id="tabs"></div>
 
     <div class="problem-card">
@@ -315,10 +338,15 @@ function normalizeVN(s){
   return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').trim().replace(/\s+/g,' ');
 }
 
-const TOPICS = VAN_DATA.topics;
+const GRADES = [
+  {id:'lop4', name:'📗 Ôn lớp 4'},
+  {id:'lop5', name:'📘 Chuẩn bị lớp 5'}
+];
+function getTopics(){ return VAN_DATA[state.grade].topics; }
 const STORAGE_KEY='hocvan_progress_v1';
 const state = {
-  topic: TOPICS[0].id,
+  grade: 'lop4',
+  topic: VAN_DATA.lop4.topics[0].id,
   currentQuestion:null,
   lastIndexByTopic:{},
   sessionStreak:0,
@@ -335,14 +363,16 @@ function loadProgress(){
     if(raw){
       const data = JSON.parse(raw);
       if(data.history) state.progress.history = data.history;
+      if(data.grade) state.grade = data.grade;
       if(data.topic) state.topic = data.topic;
       if(data.playerName) state.playerName = data.playerName;
     }
   }catch(e){ /* nothing saved yet */ }
+  if(!getTopics().find(t=>t.id===state.topic)){ state.topic = getTopics()[0].id; }
 }
 function saveProgress(){
   try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({history:state.progress.history, topic:state.topic, playerName:state.playerName}));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({history:state.progress.history, grade:state.grade, topic:state.topic, playerName:state.playerName}));
   }catch(e){ console.error('Storage error:', e); }
 }
 
@@ -577,11 +607,14 @@ function renderStats(){
   document.getElementById('streak-stat').textContent=`${computeDayStreak()} ngày`;
   renderWeekChart();
 }
+function buildGradeRowHTML(){
+  return GRADES.map(g=>`<div class="grade-chip${g.id===state.grade?' active':''}" data-grade="${g.id}">${g.name}</div>`).join('');
+}
 function buildTabsHTML(){
-  return TOPICS.map(t=>`<div class="tab${t.id===state.topic?' active':''}" data-topic="${t.id}">${t.name}</div>`).join('');
+  return getTopics().map(t=>`<div class="tab${t.id===state.topic?' active':''}" data-topic="${t.id}">${t.name}</div>`).join('');
 }
 function pickQuestion(topicId){
-  const topic = TOPICS.find(t=>t.id===topicId);
+  const topic = getTopics().find(t=>t.id===topicId);
   const qs = topic.questions;
   let idx = randInt(0,qs.length-1);
   if(qs.length>1 && idx===state.lastIndexByTopic[topicId]){
@@ -619,11 +652,27 @@ function wireTopicTabs(containerId){
     });
   });
 }
-
-document.getElementById('start-tabs').innerHTML = buildTabsHTML();
-document.getElementById('tabs').innerHTML = buildTabsHTML();
-wireTopicTabs('start-tabs');
-wireTopicTabs('tabs');
+function wireGradeRow(containerId){
+  document.querySelectorAll(`#${containerId} .grade-chip`).forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      state.grade=chip.dataset.grade;
+      state.topic=getTopics()[0].id;
+      saveProgress();
+      renderGradeAndTabs();
+      if(state.started) nextProblem();
+    });
+  });
+}
+function renderGradeAndTabs(){
+  document.getElementById('start-grade-row').innerHTML = buildGradeRowHTML();
+  document.getElementById('grade-row').innerHTML = buildGradeRowHTML();
+  document.getElementById('start-tabs').innerHTML = buildTabsHTML();
+  document.getElementById('tabs').innerHTML = buildTabsHTML();
+  wireGradeRow('start-grade-row');
+  wireGradeRow('grade-row');
+  wireTopicTabs('start-tabs');
+  wireTopicTabs('tabs');
+}
 
 document.getElementById('start-btn').addEventListener('click',()=>{
   const nameInput=document.getElementById('player-name');
@@ -654,9 +703,7 @@ document.getElementById('reset-link').addEventListener('click', (e)=>{
 
 function init(){
   loadProgress();
-  document.querySelectorAll('.tab').forEach(tab=>{
-    tab.classList.toggle('active', tab.dataset.topic===state.topic);
-  });
+  renderGradeAndTabs();
   renderStats();
   if(state.playerName){
     document.getElementById('player-name').value=state.playerName;
