@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bảng Xếp Hạng</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root{
+  --paper:#FBF8F1;
+  --grid-line:#DCE6F0;
+  --margin-red:#E2554F;
+  --ink:#2E3440;
+  --pencil-blue:#3B6EA5;
+  --highlight-yellow:#F4B93E;
+  --success-green:#4C9A6A;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  background:#EDE8DD;
+  min-height:100vh;
+  padding:24px 16px 60px;
+}
+.page{
+  max-width:680px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--grid-line) 27px, var(--grid-line) 28px),
+    var(--paper);
+  border-radius:6px;
+  box-shadow:0 6px 24px rgba(46,52,64,0.12);
+  position:relative;
+  padding:28px 28px 28px 56px;
+  border:1px solid #EAE5DA;
+}
+.page::before{
+  content:'';
+  position:absolute;
+  left:40px; top:0; bottom:0;
+  width:2px;
+  background:var(--margin-red);
+  opacity:0.55;
+}
+.top-nav{margin:0 0 16px;}
+.top-nav a{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:0.88rem;
+  color:var(--pencil-blue); text-decoration:none;
+  padding:7px 16px; border-radius:999px; border:1.5px solid var(--pencil-blue);
+  background:#fff;
+}
+.top-nav a:hover{background:#EEF4FA;}
+.header h1{
+  font-family:'Patrick Hand',cursive;
+  font-size:2.1rem;
+  margin:0 0 4px;
+  color:var(--pencil-blue);
+}
+.header p.subtitle{
+  margin:0 0 20px;
+  color:#7a7468;
+  font-size:0.92rem;
+}
+.board{display:flex; flex-direction:column; gap:10px;}
+.row{
+  display:flex; align-items:center; gap:14px;
+  background:#FCFBF7; border:1.5px solid #EAE5DA; border-radius:12px;
+  padding:12px 16px;
+}
+.row.top1{border-color:#F4B93E; background:#FFF8E8;}
+.row.top2{border-color:#C9CDD3; background:#F6F7F8;}
+.row.top3{border-color:#E2A06B; background:#FCF1E6;}
+.rank{
+  font-family:'Patrick Hand',cursive; font-size:1.3rem; color:var(--pencil-blue);
+  min-width:34px; text-align:center;
+}
+.name{flex:1; font-weight:800; font-size:1.02rem;}
+.score{font-family:'Patrick Hand',cursive; color:var(--success-green); font-size:1.15rem; text-align:right;}
+.score .label{display:block; font-size:0.65rem; color:#9b9384; text-transform:uppercase; letter-spacing:0.04em; font-family:'Nunito',sans-serif;}
+.state-msg{text-align:center; color:#9b9384; font-size:0.95rem; padding:30px 10px;}
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="top-nav"><a href="index.html">← Về trang chọn môn</a></p>
+  <div class="header">
+    <h1>Bảng Xếp Hạng 🏆</h1>
+    <p class="subtitle">Xếp theo tổng số câu trả lời đúng từ trước đến nay — cả 4 môn cộng lại</p>
+  </div>
+  <div class="board" id="board">
+    <p class="state-msg">Đang tải bảng xếp hạng...</p>
+  </div>
+</div>
+
+<script>
+const BACKEND_API_URL = 'https://cham-van-lop5.vunguyen-kv.workers.dev';
+const MEDALS = ['🥇','🥈','🥉'];
+
+async function loadLeaderboard(){
+  const board = document.getElementById('board');
+  try{
+    const res = await fetch(`${BACKEND_API_URL}/leaderboard`);
+    const data = await res.json();
+    if(!res.ok || data.error){
+      board.innerHTML = `<p class="state-msg">Không tải được bảng xếp hạng lúc này, thử lại sau nhé.</p>`;
+      return;
+    }
+    const list = data.leaderboard || [];
+    if(!list.length){
+      board.innerHTML = `<p class="state-msg">Chưa có ai luyện tập cả — hãy là người đầu tiên ghi tên lên bảng! 🌟</p>`;
+      return;
+    }
+    board.innerHTML = list.map((p,i)=>{
+      const rankCls = i<3 ? ` top${i+1}` : '';
+      const rankLabel = i<3 ? MEDALS[i] : `#${i+1}`;
+      return `<div class="row${rankCls}">
+        <div class="rank">${rankLabel}</div>
+        <div class="name">${escapeHTML(p.player_name)}</div>
+        <div class="score"><span class="label">câu đúng</span>${p.total_correct} / ${p.total_attempted}</div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    board.innerHTML = `<p class="state-msg">Không kết nối được tới bảng xếp hạng. Kiểm tra mạng và thử lại nhé.</p>`;
+  }
+}
+function escapeHTML(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+loadLeaderboard();
+</script>
+</body>
+</html>

@@ -5,6 +5,11 @@ compatibility_date = "2025-01-01"
 [ai]
 binding = "AI"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "hoctap-leaderboard"
+database_id = "6a93b328-f99f-4614-a658-0154ecfbef9c"
+
 [vars]
 # Danh sách domain được phép gọi proxy này, ngăn người lạ xài chùa key.
 # Cách nhau bằng dấu phẩy, KHÔNG có dấu / ở cuối. Ví dụ sau khi deploy lên Cloudflare Pages:

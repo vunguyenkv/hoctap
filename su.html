@@ -320,6 +320,15 @@ const GRADES = [
   {id:'lop5', name:'📘 Chuẩn bị lớp 5'}
 ];
 function getTopics(){ return SU_DATA[state.grade].topics; }
+const BACKEND_API_URL = 'https://cham-van-lop5.vunguyen-kv.workers.dev';
+function reportScore(correct){
+  if(!BACKEND_API_URL || !state.playerName) return;
+  fetch(`${BACKEND_API_URL}/report`, {
+    method:'POST',
+    headers:{'content-type':'application/json'},
+    body: JSON.stringify({name: state.playerName, correct: !!correct})
+  }).catch(()=>{});
+}
 const STORAGE_KEY='hocsu_progress_v1';
 const state = {
   grade: 'lop4',
@@ -505,6 +514,7 @@ function updateStats(correct){
   if(correct){ state.progress.history[t].correct++; state.sessionStreak++; }
   else { state.sessionStreak=0; }
   saveProgress();
+  reportScore(correct);
   renderStats();
 }
 function computeDayStreak(){
