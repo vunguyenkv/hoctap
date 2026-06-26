@@ -1,0 +1,13 @@
+name = "cham-van-lop5"
+main = "cham-van.js"
+compatibility_date = "2025-01-01"
+
+[ai]
+binding = "AI"
+
+[vars]
+# Danh sách domain được phép gọi proxy này, ngăn người lạ xài chùa key.
+# Cách nhau bằng dấu phẩy, KHÔNG có dấu / ở cuối. Ví dụ sau khi deploy lên Cloudflare Pages:
+# ALLOWED_ORIGINS = "https://ten-site-cua-ban.pages.dev,null"
+# "null" cho phép test khi mở van.html trực tiếp bằng double-click (origin "null").
+ALLOWED_ORIGINS = "https://hoctap.grus.io.vn,null"

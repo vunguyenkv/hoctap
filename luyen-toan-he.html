@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vở Luyện Toán Mùa Hè</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root{
+  --paper:#FBF8F1;
+  --grid-line:#DCE6F0;
+  --margin-red:#E2554F;
+  --ink:#2E3440;
+  --pencil-blue:#3B6EA5;
+  --highlight-yellow:#F4B93E;
+  --success-green:#4C9A6A;
+  --card-bg:#FFFFFF;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  background:#EDE8DD;
+  min-height:100vh;
+  padding:24px 16px 60px;
+}
+.page{
+  max-width:680px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--grid-line) 27px, var(--grid-line) 28px),
+    var(--paper);
+  border-radius:6px;
+  box-shadow:0 6px 24px rgba(46,52,64,0.12);
+  position:relative;
+  padding:28px 28px 28px 56px;
+  border:1px solid #EAE5DA;
+}
+.page::before{
+  content:'';
+  position:absolute;
+  left:40px; top:0; bottom:0;
+  width:2px;
+  background:var(--margin-red);
+  opacity:0.55;
+}
+.top-nav{margin:0 0 16px;}
+.top-nav a{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:0.88rem;
+  color:var(--pencil-blue); text-decoration:none;
+  padding:7px 16px; border-radius:999px; border:1.5px solid var(--pencil-blue);
+  background:#fff;
+}
+.top-nav a:hover{background:#EEF4FA;}
+
+.header h1{
+  font-family:'Patrick Hand',cursive;
+  font-size:2.1rem;
+  margin:0 0 4px;
+  color:var(--pencil-blue);
+}
+.header p.subtitle{
+  margin:0 0 20px;
+  color:#7a7468;
+  font-size:0.92rem;
+}
+
+.stats-row{
+  display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+}
+.stat-card{
+  flex:1; min-width:110px;
+  background:#F7F4EC;
+  border:1px solid #EAE5DA;
+  border-radius:10px;
+  padding:10px 12px;
+  text-align:center;
+}
+.stat-card.wide{flex:2; min-width:180px;}
+.stat-card .stat-value{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.6rem;
+  color:var(--pencil-blue);
+  line-height:1.2;
+}
+.stat-card .stat-label{
+  font-size:0.7rem; color:#9b9384; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px;
+}
+.week-chart{display:flex; gap:4px; justify-content:center; margin-top:6px; flex-wrap:wrap;}
+.week-cell{
+  width:26px; height:26px; border-radius:5px;
+  background:#fff; border:1px solid var(--grid-line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.6rem; color:#bbb; font-weight:700;
+}
+.week-cell.done.high{background:#DCEFE2; border-color:var(--success-green); color:var(--success-green);}
+.week-cell.done.mid{background:#FCEFC7; border-color:var(--highlight-yellow); color:#A07A1E;}
+.week-cell.done.low{background:#FBDAD8; border-color:var(--margin-red); color:var(--margin-red);}
+
+.tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.tab{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.05rem;
+  padding:8px 16px;
+  border-radius:10px;
+  border:1.5px solid #EAE5DA;
+  background:#F7F4EC;
+  color:#9b9384;
+  cursor:pointer;
+  user-select:none;
+}
+.tab.active{
+  background:var(--pencil-blue);
+  color:#fff;
+  border-color:var(--pencil-blue);
+}
+
+.diff-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+.chip{
+  padding:6px 16px; border-radius:999px; border:1.5px solid var(--pencil-blue);
+  background:#fff; color:var(--pencil-blue); cursor:pointer; font-weight:700; font-size:0.85rem;
+  user-select:none;
+}
+.chip.active{ background:var(--pencil-blue); color:#fff; }
+
+.problem-card{
+  background:#FCFBF7;
+  border:1.5px dashed var(--grid-line);
+  border-radius:12px;
+  padding:26px 18px;
+  text-align:center;
+  margin-bottom:16px;
+}
+#problem-prompt{
+  font-size:1.9rem;
+  font-weight:800;
+  margin-bottom:6px;
+  line-height:1.4;
+}
+#problem-prompt .num{ color:var(--ink); }
+#problem-prompt .op{ color:var(--pencil-blue); margin:0 6px; }
+
+.vmul{display:inline-block; text-align:right;}
+.vmul-row{padding:1px 4px; letter-spacing:1px;}
+.vmul-op{display:inline-block; width:24px; text-align:left; color:var(--pencil-blue);}
+.vmul-rule{border-top:3px solid var(--ink); margin-top:4px;}
+
+.vdiv{display:inline-flex; align-items:flex-start; letter-spacing:1px;}
+.vdiv-dividend{padding-right:14px; padding-top:2px;}
+.vdiv-bracket{border-left:3px solid var(--ink); border-bottom:3px solid var(--ink); padding:0 16px 10px 14px; min-width:36px; text-align:center;}
+
+.frac{display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 6px;}
+.frac .fnum{border-bottom:2.5px solid currentColor; padding:0 6px 2px; min-width:14px;}
+.frac .fden{padding:2px 6px 0; min-width:14px;}
+
+.visual-area{margin:14px 0;}
+.visual-area svg{display:block; margin:0 auto;}
+
+.timer-row{display:flex; align-items:center; gap:8px; margin-bottom:14px;}
+.timer-row .clock{font-size:1.1rem;}
+.timer-bar-track{flex:1; height:10px; background:#EDE8DD; border-radius:6px; overflow:hidden;}
+.timer-bar-fill{height:100%; width:100%; background:var(--success-green); transition:width 1s linear, background 0.3s;}
+.timer-bar-fill.warn{background:var(--highlight-yellow);}
+.timer-bar-fill.over{background:var(--margin-red);}
+.timer-text{font-family:'Patrick Hand',cursive; font-size:1rem; color:#9b9384; min-width:48px; text-align:right;}
+.timer-msg{font-size:0.82rem; color:#A0701B; margin:0 0 12px; text-align:center;}
+
+.hint-toggle{
+  display:inline-flex; align-items:center; gap:6px;
+  background:#FFF6E0; border:1.5px dashed var(--highlight-yellow);
+  color:#A0701B; font-family:'Patrick Hand',cursive; font-size:1rem;
+  padding:6px 14px; border-radius:999px; cursor:pointer; margin:4px 0 0;
+  user-select:none;
+}
+.hint-toggle:hover{background:#FCEFC7;}
+.hint-box{
+  display:none; text-align:left; margin:10px 0 0; padding:12px 14px;
+  background:#FFFDF6; border:1.5px solid var(--highlight-yellow); border-radius:10px;
+}
+.hint-box.open{display:block;}
+.cuu-chuong-card{margin-bottom:10px;}
+.cuu-chuong-card:last-child{margin-bottom:0;}
+.cuu-chuong-card h4{margin:0 0 4px; font-family:'Patrick Hand',cursive; font-size:1.1rem; color:#A0701B;}
+.cuu-chuong-tip{font-size:0.85rem; color:#5A4313; margin:0 0 6px; line-height:1.5;}
+.cuu-chuong-table{display:flex; gap:6px; flex-wrap:wrap;}
+.cuu-chuong-table span{
+  background:#fff; border:1px solid #EAE5DA; border-radius:6px;
+  padding:3px 7px; font-size:0.8rem; font-weight:700; color:var(--pencil-blue);
+  white-space:nowrap;
+}
+
+#answer-area{margin-top:14px;}
+.ans-input{
+  font-family:'Nunito',sans-serif;
+  font-size:1.4rem; font-weight:700;
+  width:80px; padding:8px; text-align:center;
+  border:2px solid var(--pencil-blue); border-radius:8px;
+  background:#fff; color:var(--ink);
+}
+.ans-input.small{width:64px;}
+.ans-input:focus{outline:none; border-color:var(--highlight-yellow); box-shadow:0 0 0 3px rgba(244,185,62,0.25);}
+.ans-input:disabled{opacity:0.6;}
+.frac-input{display:inline-flex; flex-direction:column; align-items:center; gap:6px;}
+.frac-line{width:64px; height:2px; background:var(--ink);}
+.qr-input{display:flex; gap:24px; justify-content:center; flex-wrap:wrap;}
+.qr-field{display:flex; flex-direction:column; align-items:center; gap:6px;}
+.qr-field label{font-size:0.85rem; color:#9b9384; font-weight:700;}
+.compare-buttons{display:flex; gap:12px; justify-content:center;}
+.cmp-btn{
+  font-size:1.6rem; font-weight:800; width:60px; height:54px;
+  border:2px solid var(--pencil-blue); border-radius:10px; background:#fff; color:var(--pencil-blue); cursor:pointer;
+}
+.cmp-btn:hover:not(:disabled){background:#EEF4FA;}
+.cmp-btn:disabled{opacity:0.5; cursor:default;}
+
+.actions{display:flex; gap:12px; justify-content:center; margin-top:8px; flex-wrap:wrap;}
+.btn{
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem;
+  padding:11px 26px; border-radius:999px; border:none; cursor:pointer;
+}
+.btn-primary{background:var(--pencil-blue); color:#fff;}
+.btn-primary:disabled{background:#CBD6E1; cursor:default;}
+.btn-secondary{background:var(--highlight-yellow); color:#5A4313;}
+.btn-secondary:disabled{background:#F0E4C8; color:#c9bb98; cursor:default;}
+
+.feedback{margin-top:16px; min-height:8px;}
+.feedback.correct{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.feedback .stamp{animation: stamp-in 0.45s ease-out;}
+@keyframes stamp-in{
+  0%{ transform: scale(2) rotate(-15deg); opacity:0; }
+  60%{ transform: scale(0.9) rotate(8deg); opacity:1; }
+  100%{ transform: scale(1) rotate(-6deg); opacity:1; }
+}
+.feedback .fb-text{font-family:'Patrick Hand',cursive; font-size:1.35rem; color:var(--success-green); margin:0;}
+.feedback .milestone{font-weight:800; color:var(--highlight-yellow); margin:2px 0 0; font-size:0.95rem;}
+.feedback.incorrect{
+  background:#FCF6E8; border:1.5px solid var(--highlight-yellow); border-radius:10px; padding:14px 16px; text-align:left;
+}
+.feedback.incorrect .fb-text{font-family:'Nunito',sans-serif; font-weight:800; margin:0 0 8px; color:#A0701B; font-size:1rem;}
+.feedback .explain{
+  font-family:'Nunito',sans-serif; font-size:0.9rem; white-space:pre-wrap; background:#fff; border-radius:8px; padding:10px 12px; margin:0 0 8px; line-height:1.8; border:1px solid #F0E4C8;
+}
+.feedback .explain strong{
+  color:#A0701B; background:#FCEFC7; padding:1px 4px; border-radius:4px; font-weight:800;
+}
+.feedback .explain .step-label{
+  display:block; font-family:'Patrick Hand',cursive; font-weight:700; font-size:1rem; color:var(--pencil-blue); margin-top:10px;
+}
+.feedback .correct-answer{font-weight:800; margin:0; color:var(--pencil-blue);}
+
+.reset-row{text-align:right; margin-top:14px;}
+.reset-row a{font-size:0.72rem; color:#bbb3a4; text-decoration:underline; cursor:pointer;}
+
+.player-greeting{
+  font-family:'Patrick Hand',cursive; font-size:1.1rem; color:var(--success-green); margin:0 0 16px;
+}
+.start-screen{display:flex; flex-direction:column; gap:22px;}
+.start-field label{
+  display:block; font-family:'Patrick Hand',cursive; font-size:1.05rem; color:var(--pencil-blue); margin-bottom:8px;
+}
+.name-input{
+  width:100%; font-family:'Nunito',sans-serif; font-size:1rem; padding:10px 14px;
+  border:2px solid var(--pencil-blue); border-radius:8px; background:#fff; color:var(--ink);
+}
+.name-input:focus{outline:none; border-color:var(--highlight-yellow); box-shadow:0 0 0 3px rgba(244,185,62,0.25);}
+#practice-area{display:none;}
+
+@media (max-width:480px){
+  .page{padding:22px 16px 22px 38px;}
+  .page::before{left:24px;}
+  .header h1{font-size:1.7rem;}
+  #problem-prompt{font-size:1.5rem;}
+  .ans-input{font-size:1.2rem; width:64px;}
+  .ans-input.small{width:52px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="top-nav"><a href="index.html">← Về trang chọn môn</a></p>
+  <div class="header">
+    <h1>Vở Luyện Toán Mùa Hè ✏️</h1>
+    <p class="subtitle">Ôn nhân, chia số có 2-3 chữ số và phân số — chuẩn bị thật chắc cho lớp 5</p>
+    <p class="player-greeting" id="player-greeting" style="display:none;"></p>
+  </div>
+
+  <div class="start-screen" id="start-screen">
+    <div class="start-field">
+      <label for="player-name">Tên của bé là gì?</label>
+      <input type="text" id="player-name" class="name-input" placeholder="Nhập tên của bé...">
+    </div>
+    <div class="start-field">
+      <label>Chọn chủ đề muốn luyện:</label>
+      <div class="tabs">
+        <div class="tab active" data-topic="nhan">✖️ Nhân</div>
+        <div class="tab" data-topic="chia">➗ Chia</div>
+        <div class="tab" data-topic="phanso">🍕 Phân số</div>
+        <div class="tab" data-topic="tonghop">🎯 Tổng hợp</div>
+      </div>
+    </div>
+    <div class="start-field">
+      <label>Chọn độ khó:</label>
+      <div class="diff-row">
+        <div class="chip active" data-diff="de">Dễ</div>
+        <div class="chip" data-diff="vua">Vừa</div>
+        <div class="chip" data-diff="kho">Khó</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="start-btn" style="width:100%; font-size:1.1rem; padding:16px;">🚀 Bắt đầu luyện tập</button>
+  </div>
+
+  <div id="practice-area">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="today-stat">0/0</div>
+        <div class="stat-label">Đúng hôm nay</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="streak-stat">0 ngày</div>
+        <div class="stat-label">Chuỗi ngày ôn</div>
+      </div>
+      <div class="stat-card wide">
+        <div class="stat-label" style="margin-bottom:4px;">7 ngày gần đây</div>
+        <div class="week-chart" id="week-chart"></div>
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-topic="nhan">✖️ Nhân</div>
+      <div class="tab" data-topic="chia">➗ Chia</div>
+      <div class="tab" data-topic="phanso">🍕 Phân số</div>
+      <div class="tab" data-topic="tonghop">🎯 Tổng hợp</div>
+    </div>
+
+    <div class="diff-row" id="diff-row">
+      <div class="chip active" data-diff="de">Dễ</div>
+      <div class="chip" data-diff="vua">Vừa</div>
+      <div class="chip" data-diff="kho">Khó</div>
+    </div>
+
+    <div class="problem-card">
+      <div class="timer-row">
+        <span class="clock">⏱</span>
+        <div class="timer-bar-track"><div class="timer-bar-fill" id="timer-fill"></div></div>
+        <span class="timer-text" id="timer-text">0:30</span>
+      </div>
+      <div class="timer-msg" id="timer-msg"></div>
+      <div id="problem-prompt"></div>
+      <button class="hint-toggle" id="hint-toggle" type="button">💡 Ôn lại cửu chương cho bài này</button>
+      <div class="hint-box" id="hint-box"></div>
+      <div class="visual-area" id="visual-area"></div>
+      <div id="answer-area"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="check-btn">Kiểm tra</button>
+      <button class="btn btn-secondary" id="next-btn" disabled>Câu tiếp theo →</button>
+    </div>
+
+    <div class="reset-row">
+      <a id="reset-link">Xóa tiến trình đã lưu</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- helpers ----------
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); return b===0?a:gcd(b,a%b); }
+function lcm(a,b){ return a*b/gcd(a,b); }
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function fracHTML(num,den){
+  return `<span class="frac"><span class="fnum">${num}</span><span class="fden">${den}</span></span>`;
+}
+function vmulHTML(a,b){
+  return `<div class="vmul">
+    <div class="vmul-row">${a}</div>
+    <div class="vmul-row"><span class="vmul-op">×</span>${b}</div>
+    <div class="vmul-rule"></div>
+  </div>`;
+}
+function vdivHTML(dividend,divisor){
+  return `<div class="vdiv">
+    <span class="vdiv-dividend">${dividend}</span>
+    <span class="vdiv-bracket">${divisor}</span>
+  </div>`;
+}
+function placeValueParts(n){
+  const s=n.toString(); const len=s.length; const parts=[];
+  for(let i=0;i<len;i++){
+    const d=parseInt(s[i]);
+    if(d===0) continue;
+    parts.push(d*Math.pow(10,len-1-i));
+  }
+  return parts.length?parts:[0];
+}
+
+// ---------- thời gian gợi ý ----------
+const TIME_LIMITS={
+  nhan:{de:30, vua:45, kho:60},
+  chia:{de:30, vua:45, kho:60},
+  phanso:{de:40, vua:55, kho:70}
+};
+
+// ---------- highlight helper ----------
+function hl(x){ return `<strong>${x}</strong>`; }
+
+// ---------- cửu chương helper ----------
+function digitsOf(n){
+  return [...new Set(String(Math.abs(n)).split('').map(Number).filter(d=>d>=2&&d<=9))];
+}
+function cuuChuongFor(...nums){
+  const set=new Set();
+  nums.forEach(n=>{
+    if(n>=2 && n<=9) set.add(n);
+    else digitsOf(n).forEach(d=>set.add(d));
+  });
+  return [...set].sort((a,b)=>a-b);
+}
+const CUU_CHUONG_TIPS={
+  2:'Nhân 2 là dễ nhất: cộng số đó với chính nó! 2 lần "gọi tên" bằng nhau 👯',
+  3:'Nhân 3 = nhân 2 rồi cộng thêm 1 lần nữa. Lặp lại ba lần như "1, 2, 3 cùng nhảy!" 🐸',
+  4:'Nhân 4 = gấp đôi rồi gấp đôi tiếp (x2 hai lần) — như bánh mì nướng phồng to gấp 4! 🍞',
+  5:'Nhân 5: số chẵn × 5 luôn tận cùng là 0, số lẻ × 5 luôn tận cùng là 5. Hoặc lấy ×10 rồi chia 2! ✋',
+  6:'Nhân 6 = nhân 5 rồi cộng thêm chính số đó 1 lần — "5 cộng 1 phần nữa cho chẵn 6"! 🎲',
+  7:'Bảng 7 chỉ khó ở vài chỗ: 7×7=49, 7×8=56, 7×9=63 — học vẹt đúng 3 "ca khó" này là xong! 🎯',
+  8:'Nhân 8 = gấp đôi ba lần liên tiếp (x2, x2, x2) — như con sâu nhân bản thần kỳ! 🐛➡️🐛🐛🐛🐛',
+  9:'Mẹo bàn tay thần kỳ: giơ 10 ngón, gập ngón thứ n xuống → số ngón TRÁI là hàng chục, số ngón PHẢI là hàng đơn vị! Ví dụ 9×4: gập ngón 4 → còn 3 ngón trái + 6 ngón phải = 36 🙌'
+};
+function buildHintHTML(tables){
+  if(!tables || !tables.length){
+    return `<p class="cuu-chuong-tip">Bài này không cần "mở sách cửu chương" — cứ bình tĩnh tách từng chữ số ra tính nhé! 🙂</p>`;
+  }
+  return tables.map(n=>{
+    const cells=[];
+    for(let i=1;i<=10;i++) cells.push(`<span>${n}×${i}=${n*i}</span>`);
+    const tip=CUU_CHUONG_TIPS[n]||'';
+    return `<div class="cuu-chuong-card"><h4>📌 Bài này cần cửu chương ${n}</h4>${tip?`<p class="cuu-chuong-tip">${tip}</p>`:''}<div class="cuu-chuong-table">${cells.join('')}</div></div>`;
+  }).join('');
+}
+
+// ---------- visuals (SVG) ----------
+function barSegments(num,den,color){
+  color = color || '#3B6EA5';
+  const width=240, height=24, segW=width/den; let rects='';
+  for(let i=0;i<den;i++){
+    rects+=`<rect x="${i*segW}" y="0" width="${segW}" height="${height}" fill="${i<num?color:'#FFFFFF'}" stroke="#2E3440" stroke-width="1.2"/>`;
+  }
+  return rects;
+}
+function fractionBarSVG(num,den){
+  return `<svg viewBox="0 0 240 24" width="100%" height="24" style="max-width:280px" xmlns="http://www.w3.org/2000/svg">${barSegments(num,den)}</svg>`;
+}
+function compareBarSVG(a,b,c,d){
+  return `<svg viewBox="0 0 240 100" width="100%" height="100" style="max-width:280px" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="14" font-family="Nunito, sans-serif" font-size="13" fill="#2E3440">${a}/${b}</text>
+    <g transform="translate(0,18)">${barSegments(a,b)}</g>
+    <text x="0" y="68" font-family="Nunito, sans-serif" font-size="13" fill="#2E3440">${c}/${d}</text>
+    <g transform="translate(0,72)">${barSegments(c,d)}</g>
+  </svg>`;
+}
+function stampSVG(){
+  return `<svg width="104" height="104" viewBox="0 0 104 104" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="52" cy="52" r="48" fill="none" stroke="#E2554F" stroke-width="3" stroke-dasharray="5 4"/>
+    <circle cx="52" cy="52" r="40" fill="none" stroke="#E2554F" stroke-width="1.5"/>
+    <text x="52" y="48" text-anchor="middle" font-family="'Patrick Hand',cursive" font-size="19" fill="#E2554F" font-weight="700">ĐÚNG</text>
+    <text x="52" y="71" text-anchor="middle" font-family="'Patrick Hand',cursive" font-size="19" fill="#E2554F" font-weight="700">RỒI!</text>
+  </svg>`;
+}
+
+// ---------- multiplication ----------
+function explainMultiplication(a,b){
+  const breakA = b<=9;
+  const toBreak = breakA? a: b;
+  const other = breakA? b: a;
+  const parts = placeValueParts(toBreak);
+  const lines = parts.map(p=>`${hl(p)} × ${hl(other)} = ${hl(p*other)}`);
+  const sum = a*b;
+  const intro = `🍪 Mẹo: bẻ ${hl(toBreak)} thành từng "miếng tròn chục" cho dễ nhân với cửu chương, rồi gom vụn lại!`;
+  return `${intro}\n`
+    + `<span class="step-label">Bước 1 — Tách số ${hl(toBreak)} thành các miếng tròn chục:</span>\n${hl(toBreak)} = ${parts.map(hl).join(' + ')}\n`
+    + `<span class="step-label">Bước 2 — Nhân từng miếng với ${hl(other)} (dùng cửu chương):</span>\n${lines.join('\n')}\n`
+    + `<span class="step-label">Bước 3 — Cộng các kết quả lại:</span>\n${parts.map(p=>hl(p*other)).join(' + ')} = ${hl(sum)}`;
+}
+function genMultiplication(diff){
+  let a,b;
+  if(diff==='de'){ a=randInt(10,99); b=randInt(2,9); }
+  else if(diff==='vua'){
+    if(Math.random()<0.5){ a=randInt(100,999); b=randInt(2,9); }
+    else { a=randInt(10,99); b=randInt(10,99); }
+  } else { a=randInt(100,999); b=randInt(10,99); }
+  const answer=a*b;
+  return {
+    promptHTML:vmulHTML(a,b),
+    answerType:'number',
+    correct:{value:answer},
+    explanation:explainMultiplication(a,b),
+    tables:cuuChuongFor(Math.min(a,b)),
+    timeLimit:TIME_LIMITS.nhan[diff],
+    visual:null
+  };
+}
+
+// ---------- division ----------
+function genDivision(diff){
+  let divisor, quotient;
+  if(diff==='de'){ divisor=randInt(2,9); quotient=randInt(2,20); }
+  else if(diff==='vua'){ divisor=randInt(2,9); quotient=randInt(10,99); }
+  else { divisor=randInt(11,99); quotient=randInt(4,9); }
+  const remainder = Math.random()<0.5 ? 0 : randInt(1,divisor-1);
+  const dividend = divisor*quotient+remainder;
+  const intro = remainder===0
+    ? `🍬 Mẹo: chia ${hl(dividend)} cái kẹo đều cho ${hl(divisor)} bạn, mỗi bạn được đúng ${hl(quotient)} cái, không thừa cái nào!`
+    : `🍬 Mẹo: chia ${hl(dividend)} cái kẹo đều cho ${hl(divisor)} bạn, mỗi bạn được ${hl(quotient)} cái, còn dư lại ${hl(remainder)} cái không đủ chia tiếp.`;
+  const explanation = `${intro}\n`
+    + `<span class="step-label">Bước 1 — Thương (mỗi bạn được mấy cái):</span> ${hl(quotient)}\n`
+    + `<span class="step-label">Bước 2 — Số dư (còn sót lại mấy cái):</span> ${hl(remainder)}\n`
+    + `<span class="step-label">Bước 3 — Kiểm tra lại cho chắc:</span>\nthương × số chia + số dư = số bị chia\n${hl(quotient)} × ${hl(divisor)} + ${hl(remainder)} = ${hl(quotient*divisor)} + ${hl(remainder)} = ${hl(dividend)}`;
+  return {
+    promptHTML:vdivHTML(dividend,divisor),
+    answerType:'qr',
+    correct:{q:quotient, r:remainder},
+    explanation,
+    tables:cuuChuongFor(divisor),
+    timeLimit:TIME_LIMITS.chia[diff],
+    visual:null
+  };
+}
+
+// ---------- fractions ----------
+function genRutGon(easy){
+  const q = randInt(2, easy?6:9);
+  let p = randInt(1,q-1);
+  while(gcd(p,q)!==1){ p=randInt(1,q-1); }
+  const k = randInt(2, easy?4:6);
+  const a=p*k, b=q*k;
+  return {
+    promptHTML:`Rút gọn phân số sau về dạng tối giản: ${fracHTML(a,b)}`,
+    answerType:'fraction',
+    correct:{num:p, denom:q, exact:true},
+    explanation:`🍕 Mẹo: rút gọn phân số giống như cắt pizza thành miếng to hơn — số miếng ít đi nhưng lượng bánh ăn được vẫn y nguyên!\n`
+      + `<span class="step-label">Bước 1 — Tìm ƯCLN (số lớn nhất chia hết cả tử và mẫu):</span>\nƯCLN(${hl(a)}, ${hl(b)}) = ${hl(k)}\n`
+      + `<span class="step-label">Bước 2 — Chia cả tử và mẫu cho ${hl(k)}:</span>\n${hl(a)} : ${hl(k)} = ${hl(p)}\n${hl(b)} : ${hl(k)} = ${hl(q)}\n`
+      + `<span class="step-label">Kết quả:</span> ${hl(p+'/'+q)}`,
+    tables:cuuChuongFor(k, q),
+    visual:fractionBarSVG(a,b)
+  };
+}
+function genBangNhau(){
+  const q=randInt(2,9);
+  let p=randInt(1,q-1);
+  while(gcd(p,q)!==1){ p=randInt(1,q-1); }
+  const k=randInt(2,6);
+  const a=p*k, b=q*k;
+  const magicIntro = `🪄 Mẹo "phép thuật nhân đôi": nhân CẢ tử số và mẫu số với CÙNG một số thì phân số không đổi giá trị — giống như cắt bánh thành nhiều miếng nhỏ hơn nhưng chia cho nhiều người hơn theo đúng tỉ lệ, ai cũng vẫn ăn phần bằng nhau!`;
+  if(Math.random()<0.5){
+    return {
+      promptHTML:`Điền số thích hợp vào ô trống: ${fracHTML(p,q)} = ${fracHTML('?',b)}`,
+      answerType:'number',
+      correct:{value:a},
+      explanation:`${magicIntro}\n`
+        + `<span class="step-label">Bước 1 — Tìm số đã nhân vào mẫu số:</span>\n${hl(q)} × ${hl(k)} = ${hl(b)} → mẫu số đã nhân với ${hl(k)}\n`
+        + `<span class="step-label">Bước 2 — Nhân tử số với CÙNG số ${hl(k)}:</span>\n${hl(p)} × ${hl(k)} = ${hl(a)}`,
+      tables:cuuChuongFor(k),
+      visual:null
+    };
+  } else {
+    return {
+      promptHTML:`Điền số thích hợp vào ô trống: ${fracHTML(p,q)} = ${fracHTML(a,'?')}`,
+      answerType:'number',
+      correct:{value:b},
+      explanation:`${magicIntro}\n`
+        + `<span class="step-label">Bước 1 — Tìm số đã nhân vào tử số:</span>\n${hl(p)} × ${hl(k)} = ${hl(a)} → tử số đã nhân với ${hl(k)}\n`
+        + `<span class="step-label">Bước 2 — Nhân mẫu số với CÙNG số ${hl(k)}:</span>\n${hl(q)} × ${hl(k)} = ${hl(b)}`,
+      tables:cuuChuongFor(k),
+      visual:null
+    };
+  }
+}
+function genSoSanh(sameDenom, cross){
+  let a,b,c,d;
+  if(sameDenom){
+    b = d = randInt(2,9);
+    a = randInt(1,b-1);
+    c = randInt(1,d-1);
+  } else if(!cross){
+    b = randInt(2,6);
+    const k = randInt(2,4);
+    d = b*k;
+    a = randInt(1,b-1);
+    c = randInt(1,d-1);
+  } else {
+    b = randInt(2,12);
+    d = randInt(2,12);
+    a = randInt(1,b-1);
+    c = randInt(1,d-1);
+  }
+  const left=a*d, right=c*b;
+  const symbol = left<right?'<':(left>right?'>':'=');
+  let explanation;
+  if(b===d){
+    explanation=`⚖️ Mẹo: hai phân số cùng "cỡ miếng" (mẫu số giống nhau) — chỉ cần xem ai có NHIỀU miếng hơn (so sánh tử số) là biết ai lớn hơn!\n`
+      + `<span class="step-label">Bước 1 — Kiểm tra mẫu số:</span>\nCả hai phân số đều có mẫu số ${hl(b)} ✅ (cùng cỡ miếng)\n`
+      + `<span class="step-label">Bước 2 — So sánh tử số:</span>\n${hl(a)} ${symbol} ${hl(c)}`;
+  } else {
+    const lcmVal=lcm(b,d);
+    explanation=`⚖️ Mẹo: hai phân số đang "cỡ miếng" khác nhau, phải quy đồng để đưa về cùng cỡ — như đổi hết tiền về cùng 1 loại để so ai giàu hơn!\n`
+      + `<span class="step-label">Bước 1 — Tìm mẫu số chung (MSC) của ${hl(b)} và ${hl(d)}:</span>\nMSC = ${hl(lcmVal)}\n`
+      + `<span class="step-label">Bước 2 — Quy đồng cả hai phân số về MSC:</span>\n${hl(a)}/${hl(b)} = ${hl(a*(lcmVal/b))}/${hl(lcmVal)}\n${hl(c)}/${hl(d)} = ${hl(c*(lcmVal/d))}/${hl(lcmVal)}\n`
+      + `<span class="step-label">Bước 3 — So sánh tử số sau khi quy đồng:</span>\n${hl(a*(lcmVal/b))} ${symbol} ${hl(c*(lcmVal/d))}`;
+  }
+  return {
+    promptHTML:`So sánh hai phân số: ${fracHTML(a,b)} và ${fracHTML(c,d)}`,
+    answerType:'compare',
+    correct:{symbol},
+    explanation,
+    tables:cuuChuongFor(b,d),
+    visual:compareBarSVG(a,b,c,d)
+  };
+}
+function genCongTru(sameDenom){
+  const isAdd = Math.random()<0.6;
+  const opSym = isAdd?'+':'−';
+  if(sameDenom){
+    const b=randInt(2,12);
+    let a=randInt(1,b-1), c=randInt(1,b-1);
+    if(!isAdd && a<c){ const t=a; a=c; c=t; }
+    const resNum=isAdd?a+c:a-c;
+    return {
+      promptHTML:`${fracHTML(a,b)} ${opSym} ${fracHTML(c,b)} =`,
+      answerType:'fraction',
+      correct:{num:resNum, denom:b, exact:false},
+      explanation:`🍕 Mẹo: cùng mẫu số nghĩa là cùng "cỡ miếng pizza" — chỉ cần ${isAdd?'cộng':'trừ'} số miếng (tử số), cỡ miếng (mẫu số) giữ nguyên!\n`
+        + `<span class="step-label">Bước 1 — Kiểm tra mẫu số:</span>\nCùng mẫu số ${hl(b)} ✅ (cùng cỡ miếng, giữ nguyên)\n`
+        + `<span class="step-label">Bước 2 — ${isAdd?'Cộng':'Trừ'} hai tử số:</span>\n${hl(a)} ${opSym} ${hl(c)} = ${hl(resNum)}\n`
+        + `<span class="step-label">Kết quả:</span> ${hl(resNum+'/'+b)}`,
+      tables:cuuChuongFor(b),
+      visual:null
+    };
+  } else {
+    const b=randInt(2,6);
+    const k=randInt(2,4);
+    const d=b*k;
+    const a=randInt(1,b-1);
+    const aConv=a*k;
+    const c = isAdd ? randInt(1,d-1) : randInt(1,aConv);
+    const resNum=isAdd?aConv+c:aConv-c;
+    return {
+      promptHTML:`${fracHTML(a,b)} ${opSym} ${fracHTML(c,d)} =`,
+      answerType:'fraction',
+      correct:{num:resNum, denom:d, exact:false},
+      explanation:`🍕 Mẹo: hai miếng pizza đang cắt cỡ khác nhau, phải quy đồng (cắt lại cùng cỡ) rồi mới ${isAdd?'cộng':'trừ'} được!\n`
+        + `<span class="step-label">Bước 1 — Quy đồng mẫu số:</span>\n${hl(b)} × ${hl(k)} = ${hl(d)} → ${hl(a)}/${hl(b)} = ${hl(aConv)}/${hl(d)}\n`
+        + `<span class="step-label">Bước 2 — ${isAdd?'Cộng':'Trừ'} tử số (mẫu số giữ nguyên):</span>\n${hl(aConv)}/${hl(d)} ${opSym} ${hl(c)}/${hl(d)} = ${hl(resNum)}/${hl(d)}`,
+      tables:cuuChuongFor(k, b),
+      visual:null
+    };
+  }
+}
+function genFraction(diff){
+  let pool;
+  if(diff==='de') pool=['rutgon_easy','bangnhau','sosanh_samedenom'];
+  else if(diff==='vua') pool=['rutgon','bangnhau','sosanh_diff','congtru_cungmau'];
+  else pool=['rutgon','sosanh_cross','congtru_cungmau','congtru_khacmau'];
+  const type = pool[randInt(0,pool.length-1)];
+  let p;
+  switch(type){
+    case 'rutgon_easy': p=genRutGon(true); break;
+    case 'rutgon': p=genRutGon(false); break;
+    case 'bangnhau': p=genBangNhau(); break;
+    case 'sosanh_samedenom': p=genSoSanh(true); break;
+    case 'sosanh_diff': p=genSoSanh(false); break;
+    case 'sosanh_cross': p=genSoSanh(false,true); break;
+    case 'congtru_cungmau': p=genCongTru(true); break;
+    case 'congtru_khacmau': p=genCongTru(false); break;
+  }
+  p.timeLimit=TIME_LIMITS.phanso[diff];
+  return p;
+}
+
+// ---------- mixed ----------
+function genMixed(diff){
+  const r=Math.random();
+  if(r<0.34) return genMultiplication(diff);
+  if(r<0.67) return genDivision(diff);
+  return genFraction(diff);
+}
+function generateProblem(topic,diff){
+  switch(topic){
+    case 'nhan': return genMultiplication(diff);
+    case 'chia': return genDivision(diff);
+    case 'phanso': return genFraction(diff);
+    case 'tonghop': return genMixed(diff);
+  }
+}
+
+// ---------- state & storage ----------
+const STORAGE_KEY='hocmathe_progress_v1';
+const state = {
+  topic:'nhan',
+  difficulty:{nhan:'de',chia:'de',phanso:'de',tonghop:'de'},
+  currentProblem:null,
+  sessionStreak:0,
+  selectedSymbol:null,
+  progress:{history:{}},
+  timer:{interval:null, limit:30, remaining:30, over:false},
+  started:false,
+  playerName:''
+};
+
+// ---------- timer ----------
+const TIME_UP_MESSAGES=[
+  '⏰ Hết giờ gợi ý rồi, không sao nhé, cứ thong thả làm tiếp! 🐢',
+  '⏰ Quá giờ một chút thôi, từ từ suy nghĩ cho chắc rồi trả lời nha! 🧐',
+  '⏰ Đồng hồ kêu "tích tắc" rồi, nhưng bé cứ bình tĩnh, không vội đâu! 🍵'
+];
+function formatTime(s){
+  const sign = s<0 ? '+' : '';
+  const abs=Math.abs(s);
+  const m=Math.floor(abs/60), sec=abs%60;
+  return `${sign}${m}:${String(sec).padStart(2,'0')}`;
+}
+function stopTimer(){
+  if(state.timer.interval){ clearInterval(state.timer.interval); state.timer.interval=null; }
+}
+function updateTimerUI(){
+  const {limit, remaining}=state.timer;
+  const fill=document.getElementById('timer-fill');
+  const text=document.getElementById('timer-text');
+  const pct=Math.max(0, Math.min(100, (remaining/limit)*100));
+  fill.style.width=`${pct}%`;
+  fill.classList.remove('warn','over');
+  if(remaining<=0) fill.classList.add('over');
+  else if(remaining<=limit*0.3) fill.classList.add('warn');
+  text.textContent=formatTime(remaining);
+}
+function startTimer(limit){
+  stopTimer();
+  state.timer.limit=limit||30;
+  state.timer.remaining=state.timer.limit;
+  state.timer.over=false;
+  document.getElementById('timer-msg').textContent='';
+  updateTimerUI();
+  state.timer.interval=setInterval(()=>{
+    state.timer.remaining--;
+    if(state.timer.remaining<=0 && !state.timer.over){
+      state.timer.over=true;
+      document.getElementById('timer-msg').textContent=TIME_UP_MESSAGES[randInt(0,TIME_UP_MESSAGES.length-1)];
+    }
+    updateTimerUI();
+  },1000);
+}
+async function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      if(data.history) state.progress.history = data.history;
+      if(data.difficulty) state.difficulty = data.difficulty;
+      if(data.playerName) state.playerName = data.playerName;
+    }
+  }catch(e){ /* nothing saved yet */ }
+}
+async function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({history:state.progress.history, difficulty:state.difficulty, playerName:state.playerName}));
+  }catch(e){ console.error('Storage error:', e); }
+}
+
+// ---------- praise ----------
+const PRAISES=['Chính xác! 🎉','Giỏi quá!','Tuyệt vời!','Làm đúng rồi nè!','Quá đỉnh!','Number one! 👏','Siêu sao toán học!'];
+function pickPraise(){ return PRAISES[randInt(0,PRAISES.length-1)]; }
+const ENCOURAGE_LINES=[
+  'Sai một chút thôi, não đang "tập gym" để mạnh hơn đó! 💪🧠',
+  'Không sao đâu, ngay cả nhà toán học cũng từng sai trước khi giỏi! 🧙‍♂️',
+  'Lần sau bé sẽ nhớ ngay, cứ xem cách làm rồi "ăn điểm 10" lần tới! 🍦',
+  'Sai cũng là một cách học — bộ não vừa "cập nhật phần mềm" xong đó! 🤖✨',
+  'Chưa đúng nhưng cố gắng là giỏi rồi, thử lại câu sau nha siêu nhân! 🦸',
+  'Một bước "vấp nhẹ" trên con đường thành cao thủ toán học, đi tiếp nào! 🚀'
+];
+function pickEncourage(){ return ENCOURAGE_LINES[randInt(0,ENCOURAGE_LINES.length-1)]; }
+
+// ---------- rendering ----------
+function buildAnswerInputs(p){
+  switch(p.answerType){
+    case 'number':
+      return `<input type="number" id="ans-number" class="ans-input" placeholder="?" inputmode="numeric">`;
+    case 'fraction':
+      return `<div class="frac-input">
+        <input type="number" id="ans-num" class="ans-input small" placeholder="?" inputmode="numeric">
+        <div class="frac-line"></div>
+        <input type="number" id="ans-den" class="ans-input small" placeholder="?" inputmode="numeric" min="1">
+      </div>`;
+    case 'qr':
+      return `<div class="qr-input">
+        <div class="qr-field"><label>Thương</label><input type="number" id="ans-q" class="ans-input small" placeholder="?" inputmode="numeric"></div>
+        <div class="qr-field"><label>Số dư</label><input type="number" id="ans-r" class="ans-input small" placeholder="0" inputmode="numeric"></div>
+      </div>`;
+    case 'compare':
+      return `<div class="compare-buttons">
+        <button class="cmp-btn" data-sym="<">&lt;</button>
+        <button class="cmp-btn" data-sym="=">=</button>
+        <button class="cmp-btn" data-sym=">">&gt;</button>
+      </div>`;
+  }
+}
+function renderProblem(){
+  const p=state.currentProblem;
+  document.getElementById('problem-prompt').innerHTML=p.promptHTML;
+  document.getElementById('visual-area').innerHTML=p.visual||'';
+  document.getElementById('answer-area').innerHTML=buildAnswerInputs(p);
+  const fb=document.getElementById('feedback');
+  fb.innerHTML='';
+  fb.className='feedback';
+  document.getElementById('hint-box').innerHTML=buildHintHTML(p.tables);
+  document.getElementById('hint-box').classList.remove('open');
+}
+function bindAnswerEvents(){
+  const p=state.currentProblem;
+  if(p.answerType==='compare'){
+    document.querySelectorAll('.cmp-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        state.selectedSymbol=btn.dataset.sym;
+        checkAnswer();
+      });
+    });
+  } else {
+    const inputs=document.querySelectorAll('#answer-area .ans-input');
+    inputs.forEach(inp=>{
+      inp.addEventListener('keydown',e=>{
+        if(e.key==='Enter') checkAnswer();
+      });
+    });
+    if(inputs.length) setTimeout(()=>inputs[0].focus(),50);
+  }
+}
+function disableAnswerArea(){
+  document.querySelectorAll('#answer-area input, #answer-area button').forEach(el=>el.disabled=true);
+  document.getElementById('check-btn').disabled=true;
+}
+function formatCorrectAnswer(p){
+  const c=p.correct;
+  if(p.answerType==='number') return `${c.value}`;
+  if(p.answerType==='fraction'){
+    let s=`${c.num}/${c.denom}`;
+    if(!c.exact && c.num!==0){
+      const g=gcd(c.num,c.denom);
+      if(g>1) s += ` (rút gọn: ${c.num/g}/${c.denom/g})`;
+    }
+    return s;
+  }
+  if(p.answerType==='qr') return `thương = ${c.q}, số dư = ${c.r}`;
+  if(p.answerType==='compare') return c.symbol;
+}
+function checkAnswer(){
+  const p=state.currentProblem;
+  let correct=false;
+  if(p.answerType==='number'){
+    const v=parseInt(document.getElementById('ans-number').value);
+    correct = v===p.correct.value;
+  } else if(p.answerType==='fraction'){
+    const num=parseInt(document.getElementById('ans-num').value);
+    const den=parseInt(document.getElementById('ans-den').value);
+    if(!isNaN(num) && !isNaN(den) && den!==0){
+      correct = p.correct.exact ? (num===p.correct.num && den===p.correct.denom)
+                                 : (num*p.correct.denom === p.correct.num*den);
+    }
+  } else if(p.answerType==='qr'){
+    const q=parseInt(document.getElementById('ans-q').value);
+    let r=document.getElementById('ans-r').value;
+    r = r===''?0:parseInt(r);
+    correct = (q===p.correct.q && r===p.correct.r);
+  } else if(p.answerType==='compare'){
+    correct = (state.selectedSymbol===p.correct.symbol);
+  }
+  updateStats(correct);
+  showFeedback(correct,p);
+}
+function showFeedback(correct,p){
+  stopTimer();
+  disableAnswerArea();
+  document.getElementById('next-btn').disabled=false;
+  const fb=document.getElementById('feedback');
+  if(correct){
+    fb.className='feedback correct';
+    let extra='';
+    if(state.sessionStreak>0 && state.sessionStreak%5===0){
+      extra=`<p class="milestone">🔥 ${state.sessionStreak} câu đúng liên tiếp!</p>`;
+    }
+    fb.innerHTML=`<div class="stamp">${stampSVG()}</div><p class="fb-text">${pickPraise()}</p>${extra}`;
+  } else {
+    fb.className='feedback incorrect';
+    fb.innerHTML=`<p class="fb-text">Chưa đúng rồi, mình cùng xem cách làm nhé 👇</p>
+      <pre class="explain">${p.explanation}</pre>
+      <p class="correct-answer">Đáp số đúng: ${formatCorrectAnswer(p)}</p>
+      <p class="fb-text" style="margin-top:8px; font-size:0.95rem;">${pickEncourage()}</p>`;
+  }
+}
+function updateStats(correct){
+  const t=todayStr();
+  if(!state.progress.history[t]) state.progress.history[t]={correct:0,total:0};
+  state.progress.history[t].total++;
+  if(correct){ state.progress.history[t].correct++; state.sessionStreak++; }
+  else { state.sessionStreak=0; }
+  saveProgress();
+  renderStats();
+}
+function computeDayStreak(){
+  let streak=0;
+  let d=new Date();
+  let firstDay=true;
+  while(true){
+    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const entry=state.progress.history[ds];
+    if(entry && entry.total>0){ streak++; }
+    else if(firstDay){ /* hôm nay chưa làm, không tính nhưng vẫn kiểm tra hôm qua */ }
+    else break;
+    firstDay=false;
+    d.setDate(d.getDate()-1);
+    if(streak>365) break;
+  }
+  return streak;
+}
+function renderWeekChart(){
+  const container=document.getElementById('week-chart');
+  container.innerHTML='';
+  const dayLabels=['CN','T2','T3','T4','T5','T6','T7'];
+  for(let i=6;i>=0;i--){
+    const dd=new Date();
+    dd.setDate(dd.getDate()-i);
+    const ds=`${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
+    const entry=state.progress.history[ds];
+    const div=document.createElement('div');
+    div.className='week-cell';
+    if(entry && entry.total>0){
+      const pct=entry.correct/entry.total;
+      div.classList.add('done', pct>=0.8?'high':pct>=0.5?'mid':'low');
+      div.title=`${entry.total} câu, đúng ${Math.round(pct*100)}%`;
+    }
+    div.textContent=dayLabels[dd.getDay()];
+    container.appendChild(div);
+  }
+}
+function renderStats(){
+  const t=todayStr();
+  const today=state.progress.history[t]||{correct:0,total:0};
+  document.getElementById('today-stat').textContent=`${today.correct}/${today.total}`;
+  document.getElementById('streak-stat').textContent=`${computeDayStreak()} ngày`;
+  renderWeekChart();
+}
+function renderDifficultyChips(){
+  document.querySelectorAll('.chip').forEach(chip=>{
+    chip.classList.toggle('active', chip.dataset.diff===state.difficulty[state.topic]);
+  });
+}
+function syncTabsUI(){
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.classList.toggle('active', tab.dataset.topic===state.topic);
+  });
+}
+function nextProblem(){
+  state.selectedSymbol=null;
+  state.currentProblem=generateProblem(state.topic, state.difficulty[state.topic]);
+  renderProblem();
+  const checkBtn=document.getElementById('check-btn');
+  checkBtn.disabled=false;
+  checkBtn.style.display = state.currentProblem.answerType==='compare'?'none':'inline-block';
+  document.getElementById('next-btn').disabled=true;
+  bindAnswerEvents();
+  startTimer(state.currentProblem.timeLimit);
+}
+
+// ---------- event wiring ----------
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    state.topic=tab.dataset.topic;
+    syncTabsUI();
+    renderDifficultyChips();
+    if(state.started) nextProblem();
+  });
+});
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    state.difficulty[state.topic]=chip.dataset.diff;
+    renderDifficultyChips();
+    saveProgress();
+    if(state.started) nextProblem();
+  });
+});
+document.getElementById('start-btn').addEventListener('click',()=>{
+  const nameInput=document.getElementById('player-name');
+  state.playerName=nameInput.value.trim();
+  saveProgress();
+  const greeting=document.getElementById('player-greeting');
+  if(state.playerName){
+    greeting.textContent=`👋 Chào ${state.playerName}, cùng luyện toán nào!`;
+    greeting.style.display='block';
+  } else {
+    greeting.style.display='none';
+  }
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('practice-area').style.display='block';
+  state.started=true;
+  nextProblem();
+});
+document.getElementById('hint-toggle').addEventListener('click',()=>{
+  document.getElementById('hint-box').classList.toggle('open');
+});
+document.getElementById('check-btn').addEventListener('click',checkAnswer);
+document.getElementById('next-btn').addEventListener('click',nextProblem);
+document.getElementById('reset-link').addEventListener('click', async (e)=>{
+  e.preventDefault();
+  if(confirm('Xóa hết dữ liệu tiến trình đã lưu (điểm các ngày)? Không thể hoàn tác.')){
+    state.progress.history={};
+    await saveProgress();
+    renderStats();
+  }
+});
+
+// ---------- init ----------
+async function init(){
+  await loadProgress();
+  syncTabsUI();
+  renderDifficultyChips();
+  renderStats();
+  if(state.playerName){
+    document.getElementById('player-name').value=state.playerName;
+  }
+}
+init();
+</script>
+</body>
+</html>

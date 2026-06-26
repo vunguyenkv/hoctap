@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vở Luyện Tiếng Việt Mùa Hè</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root{
+  --paper:#FBF8F1;
+  --grid-line:#DCE6F0;
+  --margin-red:#E2554F;
+  --ink:#2E3440;
+  --pencil-blue:#3B6EA5;
+  --highlight-yellow:#F4B93E;
+  --success-green:#4C9A6A;
+  --card-bg:#FFFFFF;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  background:#EDE8DD;
+  min-height:100vh;
+  padding:24px 16px 60px;
+}
+.page{
+  max-width:680px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--grid-line) 27px, var(--grid-line) 28px),
+    var(--paper);
+  border-radius:6px;
+  box-shadow:0 6px 24px rgba(46,52,64,0.12);
+  position:relative;
+  padding:28px 28px 28px 56px;
+  border:1px solid #EAE5DA;
+}
+.page::before{
+  content:'';
+  position:absolute;
+  left:40px; top:0; bottom:0;
+  width:2px;
+  background:var(--margin-red);
+  opacity:0.55;
+}
+.top-nav{margin:0 0 16px;}
+.top-nav a{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:0.88rem;
+  color:var(--pencil-blue); text-decoration:none;
+  padding:7px 16px; border-radius:999px; border:1.5px solid var(--pencil-blue);
+  background:#fff;
+}
+.top-nav a:hover{background:#EEF4FA;}
+
+.header h1{
+  font-family:'Patrick Hand',cursive;
+  font-size:2.1rem;
+  margin:0 0 4px;
+  color:var(--pencil-blue);
+}
+.header p.subtitle{
+  margin:0 0 20px;
+  color:#7a7468;
+  font-size:0.92rem;
+}
+
+.stats-row{
+  display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+}
+.stat-card{
+  flex:1; min-width:110px;
+  background:#F7F4EC;
+  border:1px solid #EAE5DA;
+  border-radius:10px;
+  padding:10px 12px;
+  text-align:center;
+}
+.stat-card.wide{flex:2; min-width:180px;}
+.stat-card .stat-value{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.6rem;
+  color:var(--pencil-blue);
+  line-height:1.2;
+}
+.stat-card .stat-label{
+  font-size:0.7rem; color:#9b9384; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px;
+}
+.week-chart{display:flex; gap:4px; justify-content:center; margin-top:6px; flex-wrap:wrap;}
+.week-cell{
+  width:26px; height:26px; border-radius:5px;
+  background:#fff; border:1px solid var(--grid-line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.6rem; color:#bbb; font-weight:700;
+}
+.week-cell.done.high{background:#DCEFE2; border-color:var(--success-green); color:var(--success-green);}
+.week-cell.done.mid{background:#FCEFC7; border-color:var(--highlight-yellow); color:#A07A1E;}
+.week-cell.done.low{background:#FBDAD8; border-color:var(--margin-red); color:var(--margin-red);}
+
+.tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.tab{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.05rem;
+  padding:8px 16px;
+  border-radius:10px;
+  border:1.5px solid #EAE5DA;
+  background:#F7F4EC;
+  color:#9b9384;
+  cursor:pointer;
+  user-select:none;
+}
+.tab.active{
+  background:var(--pencil-blue);
+  color:#fff;
+  border-color:var(--pencil-blue);
+}
+
+.problem-card{
+  background:#FCFBF7;
+  border:1.5px dashed var(--grid-line);
+  border-radius:12px;
+  padding:26px 18px;
+  text-align:center;
+  margin-bottom:16px;
+}
+#problem-prompt{
+  font-size:1.2rem;
+  font-weight:700;
+  margin-bottom:6px;
+  line-height:1.5;
+  text-align:left;
+}
+
+#answer-area{margin-top:14px;}
+.mcq-options{display:flex; flex-direction:column; gap:10px;}
+.mcq-btn{
+  font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; text-align:left;
+  padding:12px 16px; border-radius:10px; border:2px solid var(--pencil-blue);
+  background:#fff; color:var(--ink); cursor:pointer;
+}
+.mcq-btn:hover:not(:disabled){background:#EEF4FA;}
+.mcq-btn:disabled{opacity:0.55; cursor:default;}
+.mcq-btn.picked{background:var(--pencil-blue); color:#fff;}
+
+.fillblank-row{display:flex; justify-content:center;}
+.fillblank-input{
+  font-family:'Nunito',sans-serif; font-size:1.1rem; font-weight:700;
+  padding:10px 14px; width:80%; max-width:320px; text-align:center;
+  border:2px solid var(--pencil-blue); border-radius:8px; background:#fff; color:var(--ink);
+}
+.fillblank-input:focus{outline:none; border-color:var(--highlight-yellow); box-shadow:0 0 0 3px rgba(244,185,62,0.25);}
+.fillblank-input:disabled{opacity:0.6;}
+
+.order-built{
+  display:flex; flex-wrap:wrap; gap:8px; justify-content:center; min-height:46px;
+  border:2px dashed var(--grid-line); border-radius:10px; padding:10px; margin-bottom:12px; background:#fff;
+}
+.order-bank{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
+.order-chunk{
+  font-family:'Nunito',sans-serif; font-size:0.95rem; font-weight:700;
+  padding:9px 14px; border-radius:999px; border:2px solid var(--pencil-blue); background:#fff; color:var(--pencil-blue); cursor:pointer;
+}
+.order-chunk:hover:not(:disabled){background:#EEF4FA;}
+.order-chunk.in-built{background:var(--pencil-blue); color:#fff;}
+.order-chunk:disabled{opacity:0.45; cursor:default;}
+
+.essay-box textarea{
+  width:100%; min-height:110px; font-family:'Nunito',sans-serif; font-size:1rem;
+  padding:12px 14px; border:2px solid var(--pencil-blue); border-radius:10px; background:#fff; color:var(--ink);
+  resize:vertical;
+}
+.essay-box textarea:focus{outline:none; border-color:var(--highlight-yellow); box-shadow:0 0 0 3px rgba(244,185,62,0.25);}
+.essay-counter{font-size:0.78rem; color:#9b9384; text-align:right; margin:4px 2px 0;}
+.essay-result{
+  margin-top:14px; text-align:left; background:#fff; border:1.5px solid var(--success-green); border-radius:10px; padding:14px 16px;
+}
+.essay-score{font-family:'Patrick Hand',cursive; font-size:1.3rem; color:var(--success-green); margin:0 0 8px;}
+.essay-result p{margin:0 0 6px; font-size:0.92rem; line-height:1.6;}
+.essay-result .label{font-weight:800; color:#A0701B;}
+.essay-loading{font-size:0.9rem; color:#9b9384; margin-top:10px;}
+.essay-error{font-size:0.88rem; color:var(--margin-red); margin-top:10px;}
+
+.actions{display:flex; gap:12px; justify-content:center; margin-top:8px; flex-wrap:wrap;}
+.btn{
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem;
+  padding:11px 26px; border-radius:999px; border:none; cursor:pointer;
+}
+.btn-primary{background:var(--pencil-blue); color:#fff;}
+.btn-primary:disabled{background:#CBD6E1; cursor:default;}
+.btn-secondary{background:var(--highlight-yellow); color:#5A4313;}
+.btn-secondary:disabled{background:#F0E4C8; color:#c9bb98; cursor:default;}
+
+.feedback{margin-top:16px; min-height:8px;}
+.feedback.correct{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.feedback .stamp{animation: stamp-in 0.45s ease-out;}
+@keyframes stamp-in{
+  0%{ transform: scale(2) rotate(-15deg); opacity:0; }
+  60%{ transform: scale(0.9) rotate(8deg); opacity:1; }
+  100%{ transform: scale(1) rotate(-6deg); opacity:1; }
+}
+.feedback .fb-text{font-family:'Patrick Hand',cursive; font-size:1.35rem; color:var(--success-green); margin:0;}
+.feedback .milestone{font-weight:800; color:var(--highlight-yellow); margin:2px 0 0; font-size:0.95rem;}
+.feedback.incorrect{
+  background:#FCF6E8; border:1.5px solid var(--highlight-yellow); border-radius:10px; padding:14px 16px; text-align:left;
+}
+.feedback.incorrect .fb-text{font-family:'Nunito',sans-serif; font-weight:800; margin:0 0 8px; color:#A0701B; font-size:1rem;}
+.feedback .explain{
+  font-family:'Nunito',sans-serif; font-size:0.9rem; white-space:pre-wrap; background:#fff; border-radius:8px; padding:10px 12px; margin:0 0 8px; line-height:1.8; border:1px solid #F0E4C8;
+}
+.feedback .correct-answer{font-weight:800; margin:0; color:var(--pencil-blue);}
+
+.reset-row{text-align:right; margin-top:14px;}
+.reset-row a{font-size:0.72rem; color:#bbb3a4; text-decoration:underline; cursor:pointer;}
+
+.player-greeting{
+  font-family:'Patrick Hand',cursive; font-size:1.1rem; color:var(--success-green); margin:0 0 16px;
+}
+.start-screen{display:flex; flex-direction:column; gap:22px;}
+.start-field label{
+  display:block; font-family:'Patrick Hand',cursive; font-size:1.05rem; color:var(--pencil-blue); margin-bottom:8px;
+}
+.name-input{
+  width:100%; font-family:'Nunito',sans-serif; font-size:1rem; padding:10px 14px;
+  border:2px solid var(--pencil-blue); border-radius:8px; background:#fff; color:var(--ink);
+}
+.name-input:focus{outline:none; border-color:var(--highlight-yellow); box-shadow:0 0 0 3px rgba(244,185,62,0.25);}
+#practice-area{display:none;}
+
+@media (max-width:480px){
+  .page{padding:22px 16px 22px 38px;}
+  .page::before{left:24px;}
+  .header h1{font-size:1.7rem;}
+  #problem-prompt{font-size:1.05rem;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="top-nav"><a href="index.html">← Về trang chọn môn</a></p>
+  <div class="header">
+    <h1>Vở Luyện Tiếng Việt Mùa Hè 📖</h1>
+    <p class="subtitle">Ôn từ loại, câu, biện pháp tu từ, từ vựng và tập làm văn — chuẩn bị thật chắc cho lớp 5</p>
+    <p class="player-greeting" id="player-greeting" style="display:none;"></p>
+  </div>
+
+  <div class="start-screen" id="start-screen">
+    <div class="start-field">
+      <label for="player-name">Tên của bé là gì?</label>
+      <input type="text" id="player-name" class="name-input" placeholder="Nhập tên của bé...">
+    </div>
+    <div class="start-field">
+      <label>Chọn chủ đề muốn luyện:</label>
+      <div class="tabs" id="start-tabs"></div>
+    </div>
+    <button class="btn btn-primary" id="start-btn" style="width:100%; font-size:1.1rem; padding:16px;">🚀 Bắt đầu luyện tập</button>
+  </div>
+
+  <div id="practice-area">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="today-stat">0/0</div>
+        <div class="stat-label">Đúng hôm nay</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="streak-stat">0 ngày</div>
+        <div class="stat-label">Chuỗi ngày ôn</div>
+      </div>
+      <div class="stat-card wide">
+        <div class="stat-label" style="margin-bottom:4px;">7 ngày gần đây</div>
+        <div class="week-chart" id="week-chart"></div>
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="problem-card">
+      <div id="problem-prompt"></div>
+      <div id="answer-area"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="check-btn">Kiểm tra</button>
+      <button class="btn btn-secondary" id="next-btn" disabled>Câu tiếp theo →</button>
+    </div>
+
+    <div class="reset-row">
+      <a id="reset-link">Xóa tiến trình đã lưu</a>
+    </div>
+  </div>
+</div>
+
+<script src="van-data.js"></script>
+<script>
+// Dán URL Cloudflare Worker chấm văn vào đây sau khi deploy (xem worker/README.md).
+// Để trống thì web vẫn chạy bình thường, chỉ phần "Tập làm văn" báo chưa cấu hình.
+const GRADE_API_URL = 'https://cham-van-lop5.vunguyen-kv.workers.dev';
+
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=randInt(0,i); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function normalizeVN(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').trim().replace(/\s+/g,' ');
+}
+
+const TOPICS = VAN_DATA.topics;
+const STORAGE_KEY='hocvan_progress_v1';
+const state = {
+  topic: TOPICS[0].id,
+  currentQuestion:null,
+  lastIndexByTopic:{},
+  sessionStreak:0,
+  progress:{history:{}},
+  started:false,
+  playerName:'',
+  picked:null,
+  order:{built:[], bank:[]}
+};
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      if(data.history) state.progress.history = data.history;
+      if(data.topic) state.topic = data.topic;
+      if(data.playerName) state.playerName = data.playerName;
+    }
+  }catch(e){ /* nothing saved yet */ }
+}
+function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({history:state.progress.history, topic:state.topic, playerName:state.playerName}));
+  }catch(e){ console.error('Storage error:', e); }
+}
+
+const PRAISES=['Chính xác! 🎉','Giỏi quá!','Tuyệt vời!','Làm đúng rồi nè!','Quá đỉnh!','Number one! 👏','Siêu sao Tiếng Việt!'];
+function pickPraise(){ return PRAISES[randInt(0,PRAISES.length-1)]; }
+const ENCOURAGE_LINES=[
+  'Sai một chút thôi, não đang "tập gym" để mạnh hơn đó! 💪🧠',
+  'Không sao đâu, càng luyện càng giỏi thôi! 🧙‍♂️',
+  'Lần sau bé sẽ nhớ ngay, cứ xem cách giải thích rồi ghi nhớ nha! 🍦',
+  'Sai cũng là một cách học — bộ não vừa "cập nhật phần mềm" xong đó! 🤖✨',
+  'Chưa đúng nhưng cố gắng là giỏi rồi, thử lại câu sau nha siêu nhân! 🦸'
+];
+function pickEncourage(){ return ENCOURAGE_LINES[randInt(0,ENCOURAGE_LINES.length-1)]; }
+function stampSVG(){
+  return `<svg width="104" height="104" viewBox="0 0 104 104" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="52" cy="52" r="48" fill="none" stroke="#E2554F" stroke-width="3" stroke-dasharray="5 4"/>
+    <circle cx="52" cy="52" r="40" fill="none" stroke="#E2554F" stroke-width="1.5"/>
+    <text x="52" y="48" text-anchor="middle" font-family="'Patrick Hand',cursive" font-size="19" fill="#E2554F" font-weight="700">ĐÚNG</text>
+    <text x="52" y="71" text-anchor="middle" font-family="'Patrick Hand',cursive" font-size="19" fill="#E2554F" font-weight="700">RỒI!</text>
+  </svg>`;
+}
+
+function buildAnswerInputs(p){
+  if(p.type==='mcq'){
+    return `<div class="mcq-options">${p.options.map((opt,i)=>`<button class="mcq-btn" data-i="${i}">${opt}</button>`).join('')}</div>`;
+  }
+  if(p.type==='fillblank'){
+    return `<div class="fillblank-row"><input type="text" id="fillblank-input" class="fillblank-input" placeholder="Nhập câu trả lời..."></div>`;
+  }
+  if(p.type==='order'){
+    state.order.built=[];
+    state.order.bank=shuffle(p.chunks.map((c,i)=>({text:c, origIndex:i})));
+    return renderOrderHTML();
+  }
+  if(p.type==='essay'){
+    return `<div class="essay-box">
+      <textarea id="essay-input" maxlength="1200" placeholder="Viết đoạn văn của bé vào đây (3-5 câu)..."></textarea>
+      <div class="essay-counter" id="essay-counter">0 ký tự</div>
+    </div>`;
+  }
+  return '';
+}
+function renderOrderHTML(){
+  const builtHTML = state.order.built.map(item=>`<button class="order-chunk in-built" data-orig="${item.origIndex}">${item.text}</button>`).join('') || '<span style="color:#bbb3a4; font-size:0.85rem;">Chạm vào từ/cụm từ bên dưới để ghép câu...</span>';
+  const bankHTML = state.order.bank.map(item=>`<button class="order-chunk" data-orig="${item.origIndex}">${item.text}</button>`).join('');
+  return `<div class="order-built" id="order-built">${builtHTML}</div>
+    <div class="order-bank" id="order-bank">${bankHTML}</div>`;
+}
+function rerenderOrder(){
+  document.getElementById('answer-area').innerHTML = renderOrderHTML();
+  bindOrderEvents();
+  document.getElementById('check-btn').disabled = state.order.bank.length>0;
+}
+function bindOrderEvents(){
+  document.querySelectorAll('#order-bank .order-chunk').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const orig=parseInt(btn.dataset.orig);
+      const idx=state.order.bank.findIndex(it=>it.origIndex===orig);
+      const [item]=state.order.bank.splice(idx,1);
+      state.order.built.push(item);
+      rerenderOrder();
+    });
+  });
+  document.querySelectorAll('#order-built .order-chunk').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const orig=parseInt(btn.dataset.orig);
+      const idx=state.order.built.findIndex(it=>it.origIndex===orig);
+      const [item]=state.order.built.splice(idx,1);
+      state.order.bank.push(item);
+      rerenderOrder();
+    });
+  });
+}
+function bindAnswerEvents(){
+  const p=state.currentQuestion;
+  if(p.type==='mcq'){
+    document.querySelectorAll('.mcq-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        state.picked=parseInt(btn.dataset.i);
+        checkAnswer();
+      });
+    });
+  } else if(p.type==='fillblank'){
+    const inp=document.getElementById('fillblank-input');
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') checkAnswer(); });
+    setTimeout(()=>inp.focus(),50);
+  } else if(p.type==='order'){
+    bindOrderEvents();
+  } else if(p.type==='essay'){
+    const ta=document.getElementById('essay-input');
+    const counter=document.getElementById('essay-counter');
+    ta.addEventListener('input',()=>{ counter.textContent=`${ta.value.length} ký tự`; });
+  }
+}
+function disableAnswerArea(){
+  document.querySelectorAll('#answer-area input, #answer-area button, #answer-area textarea').forEach(el=>el.disabled=true);
+  document.getElementById('check-btn').disabled=true;
+}
+function formatCorrectAnswer(p){
+  if(p.type==='mcq') return p.options[p.answerIndex];
+  if(p.type==='fillblank') return p.answer;
+  if(p.type==='order') return p.sentence;
+}
+function checkAnswer(){
+  const p=state.currentQuestion;
+  if(p.type==='essay'){ submitEssay(p); return; }
+  let correct=false;
+  if(p.type==='mcq'){
+    correct = state.picked===p.answerIndex;
+  } else if(p.type==='fillblank'){
+    const val=document.getElementById('fillblank-input').value;
+    const accepted=[p.answer, ...(p.accept||[])].map(normalizeVN);
+    correct = accepted.includes(normalizeVN(val));
+  } else if(p.type==='order'){
+    const builtTexts = state.order.built.map(it=>it.origIndex);
+    correct = JSON.stringify(builtTexts)===JSON.stringify(p.chunks.map((_,i)=>i));
+  }
+  updateStats(correct);
+  showFeedback(correct,p);
+}
+function showFeedback(correct,p){
+  disableAnswerArea();
+  document.getElementById('next-btn').disabled=false;
+  const fb=document.getElementById('feedback');
+  if(correct){
+    fb.className='feedback correct';
+    let extra='';
+    if(state.sessionStreak>0 && state.sessionStreak%5===0){
+      extra=`<p class="milestone">🔥 ${state.sessionStreak} câu đúng liên tiếp!</p>`;
+    }
+    fb.innerHTML=`<div class="stamp">${stampSVG()}</div><p class="fb-text">${pickPraise()}</p>${extra}`;
+  } else {
+    fb.className='feedback incorrect';
+    fb.innerHTML=`<p class="fb-text">Chưa đúng rồi, mình cùng xem lại nhé 👇</p>
+      <pre class="explain">${p.explanation}</pre>
+      <p class="correct-answer">Đáp số đúng: ${formatCorrectAnswer(p)}</p>
+      <p class="fb-text" style="margin-top:8px; font-size:0.95rem;">${pickEncourage()}</p>`;
+  }
+}
+async function submitEssay(p){
+  const ta=document.getElementById('essay-input');
+  const essay=ta.value.trim();
+  const fb=document.getElementById('feedback');
+  if(essay.length<5){
+    fb.className='feedback incorrect';
+    fb.innerHTML=`<p class="fb-text">Bé viết thêm vài câu nữa rồi nộp bài nhé! ✏️</p>`;
+    return;
+  }
+  if(!GRADE_API_URL){
+    fb.className='feedback incorrect';
+    fb.innerHTML=`<p class="fb-text">Phần chấm văn bằng AI chưa được cấu hình (thiếu GRADE_API_URL trong van.html). Xem worker/README.md để bật tính năng này.</p>`;
+    disableAnswerArea();
+    document.getElementById('next-btn').disabled=false;
+    return;
+  }
+  document.getElementById('check-btn').disabled=true;
+  fb.className='feedback';
+  fb.innerHTML=`<p class="essay-loading">🤖 Đang chấm bài, chờ bé một chút...</p>`;
+  try{
+    const res=await fetch(GRADE_API_URL,{
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify({prompt:p.prompt, essay})
+    });
+    const data=await res.json();
+    if(!res.ok || data.error){
+      fb.innerHTML=`<p class="essay-error">${data.error||'Không chấm được bài lúc này, thử lại sau nhé.'}</p>`;
+      document.getElementById('check-btn').disabled=false;
+      return;
+    }
+    disableAnswerArea();
+    document.getElementById('next-btn').disabled=false;
+    fb.innerHTML=`<div class="essay-result">
+      <p class="essay-score">📝 Điểm: ${data.diem}/10</p>
+      <p><span class="label">Cô khen:</span> ${data.loi_khen}</p>
+      <p><span class="label">Gợi ý thêm:</span> ${data.goi_y}</p>
+    </div>`;
+  }catch(e){
+    fb.innerHTML=`<p class="essay-error">Không kết nối được tới dịch vụ chấm bài. Kiểm tra lại mạng hoặc thử lại sau.</p>`;
+    document.getElementById('check-btn').disabled=false;
+  }
+}
+function updateStats(correct){
+  const t=todayStr();
+  if(!state.progress.history[t]) state.progress.history[t]={correct:0,total:0};
+  state.progress.history[t].total++;
+  if(correct){ state.progress.history[t].correct++; state.sessionStreak++; }
+  else { state.sessionStreak=0; }
+  saveProgress();
+  renderStats();
+}
+function computeDayStreak(){
+  let streak=0;
+  let d=new Date();
+  let firstDay=true;
+  while(true){
+    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const entry=state.progress.history[ds];
+    if(entry && entry.total>0){ streak++; }
+    else if(firstDay){ /* hôm nay chưa làm, không tính nhưng vẫn kiểm tra hôm qua */ }
+    else break;
+    firstDay=false;
+    d.setDate(d.getDate()-1);
+    if(streak>365) break;
+  }
+  return streak;
+}
+function renderWeekChart(){
+  const container=document.getElementById('week-chart');
+  container.innerHTML='';
+  const dayLabels=['CN','T2','T3','T4','T5','T6','T7'];
+  for(let i=6;i>=0;i--){
+    const dd=new Date();
+    dd.setDate(dd.getDate()-i);
+    const ds=`${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
+    const entry=state.progress.history[ds];
+    const div=document.createElement('div');
+    div.className='week-cell';
+    if(entry && entry.total>0){
+      const pct=entry.correct/entry.total;
+      div.classList.add('done', pct>=0.8?'high':pct>=0.5?'mid':'low');
+      div.title=`${entry.total} câu, đúng ${Math.round(pct*100)}%`;
+    }
+    div.textContent=dayLabels[dd.getDay()];
+    container.appendChild(div);
+  }
+}
+function renderStats(){
+  const t=todayStr();
+  const today=state.progress.history[t]||{correct:0,total:0};
+  document.getElementById('today-stat').textContent=`${today.correct}/${today.total}`;
+  document.getElementById('streak-stat').textContent=`${computeDayStreak()} ngày`;
+  renderWeekChart();
+}
+function buildTabsHTML(){
+  return TOPICS.map(t=>`<div class="tab${t.id===state.topic?' active':''}" data-topic="${t.id}">${t.name}</div>`).join('');
+}
+function pickQuestion(topicId){
+  const topic = TOPICS.find(t=>t.id===topicId);
+  const qs = topic.questions;
+  let idx = randInt(0,qs.length-1);
+  if(qs.length>1 && idx===state.lastIndexByTopic[topicId]){
+    idx = (idx+1)%qs.length;
+  }
+  state.lastIndexByTopic[topicId]=idx;
+  return qs[idx];
+}
+function nextProblem(){
+  state.picked=null;
+  state.currentQuestion=pickQuestion(state.topic);
+  renderProblem();
+}
+function renderProblem(){
+  const p=state.currentQuestion;
+  document.getElementById('problem-prompt').textContent=p.prompt;
+  document.getElementById('answer-area').innerHTML=buildAnswerInputs(p);
+  const fb=document.getElementById('feedback');
+  fb.innerHTML=''; fb.className='feedback';
+  const checkBtn=document.getElementById('check-btn');
+  checkBtn.style.display = p.type==='mcq' ? 'none' : 'inline-block';
+  checkBtn.disabled = p.type==='order';
+  checkBtn.textContent = p.type==='essay' ? 'Nộp bài' : 'Kiểm tra';
+  document.getElementById('next-btn').disabled=true;
+  bindAnswerEvents();
+}
+
+function wireTopicTabs(containerId){
+  document.querySelectorAll(`#${containerId} .tab`).forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      state.topic=tab.dataset.topic;
+      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.topic===state.topic));
+      saveProgress();
+      if(state.started) nextProblem();
+    });
+  });
+}
+
+document.getElementById('start-tabs').innerHTML = buildTabsHTML();
+document.getElementById('tabs').innerHTML = buildTabsHTML();
+wireTopicTabs('start-tabs');
+wireTopicTabs('tabs');
+
+document.getElementById('start-btn').addEventListener('click',()=>{
+  const nameInput=document.getElementById('player-name');
+  state.playerName=nameInput.value.trim();
+  saveProgress();
+  const greeting=document.getElementById('player-greeting');
+  if(state.playerName){
+    greeting.textContent=`👋 Chào ${state.playerName}, cùng luyện Tiếng Việt nào!`;
+    greeting.style.display='block';
+  } else {
+    greeting.style.display='none';
+  }
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('practice-area').style.display='block';
+  state.started=true;
+  nextProblem();
+});
+document.getElementById('check-btn').addEventListener('click',checkAnswer);
+document.getElementById('next-btn').addEventListener('click',nextProblem);
+document.getElementById('reset-link').addEventListener('click', (e)=>{
+  e.preventDefault();
+  if(confirm('Xóa hết dữ liệu tiến trình đã lưu (điểm các ngày)? Không thể hoàn tác.')){
+    state.progress.history={};
+    saveProgress();
+    renderStats();
+  }
+});
+
+function init(){
+  loadProgress();
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.classList.toggle('active', tab.dataset.topic===state.topic);
+  });
+  renderStats();
+  if(state.playerName){
+    document.getElementById('player-name').value=state.playerName;
+  }
+}
+init();
+</script>
+</body>
+</html>

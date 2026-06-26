@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vở Luyện Bài Mùa Hè</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root{
+  --paper:#FBF8F1;
+  --grid-line:#DCE6F0;
+  --margin-red:#E2554F;
+  --ink:#2E3440;
+  --pencil-blue:#3B6EA5;
+  --highlight-yellow:#F4B93E;
+  --success-green:#4C9A6A;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  background:#EDE8DD;
+  min-height:100vh;
+  padding:24px 16px 60px;
+}
+.page{
+  max-width:680px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--grid-line) 27px, var(--grid-line) 28px),
+    var(--paper);
+  border-radius:6px;
+  box-shadow:0 6px 24px rgba(46,52,64,0.12);
+  position:relative;
+  padding:28px 28px 28px 56px;
+  border:1px solid #EAE5DA;
+}
+.page::before{
+  content:'';
+  position:absolute;
+  left:40px; top:0; bottom:0;
+  width:2px;
+  background:var(--margin-red);
+  opacity:0.55;
+}
+.header h1{
+  font-family:'Patrick Hand',cursive;
+  font-size:2.1rem;
+  margin:0 0 4px;
+  color:var(--pencil-blue);
+}
+.header p.subtitle{
+  margin:0 0 24px;
+  color:#7a7468;
+  font-size:0.92rem;
+}
+.subject-list{display:flex; flex-direction:column; gap:14px;}
+.subject-card{
+  display:flex; align-items:center; gap:16px;
+  background:#FCFBF7; border:1.5px solid #EAE5DA; border-radius:14px;
+  padding:18px 20px; text-decoration:none; color:var(--ink);
+  transition:border-color 0.15s, transform 0.1s;
+}
+.subject-card:hover{border-color:var(--pencil-blue); transform:translateY(-1px);}
+.subject-card .emoji{font-size:2.2rem; line-height:1;}
+.subject-card .info{flex:1;}
+.subject-card h2{
+  font-family:'Patrick Hand',cursive; font-size:1.3rem; margin:0 0 2px; color:var(--pencil-blue);
+}
+.subject-card p{margin:0; font-size:0.85rem; color:#7a7468;}
+.subject-card .stat{
+  font-family:'Patrick Hand',cursive; font-size:0.95rem; color:var(--success-green); text-align:right; min-width:64px;
+}
+.subject-card .stat .small{display:block; font-size:0.65rem; color:#9b9384; text-transform:uppercase; letter-spacing:0.04em;}
+.footer-note{margin-top:24px; font-size:0.78rem; color:#9b9384; text-align:center;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>Vở Luyện Bài Mùa Hè 🎒</h1>
+    <p class="subtitle">Chọn môn muốn ôn luyện hôm nay nhé!</p>
+  </div>
+  <div class="subject-list">
+    <a class="subject-card" href="luyen-toan-he.html">
+      <div class="emoji">✏️</div>
+      <div class="info">
+        <h2>Toán</h2>
+        <p>Nhân, chia số có 2-3 chữ số và phân số</p>
+      </div>
+      <div class="stat" id="stat-toan"><span class="small">chuỗi ngày</span>—</div>
+    </a>
+    <a class="subject-card" href="van.html">
+      <div class="emoji">📖</div>
+      <div class="info">
+        <h2>Tiếng Việt</h2>
+        <p>Từ loại, câu, biện pháp tu từ, từ vựng, tập làm văn</p>
+      </div>
+      <div class="stat" id="stat-van"><span class="small">chuỗi ngày</span>—</div>
+    </a>
+    <a class="subject-card" href="su.html">
+      <div class="emoji">🏛️</div>
+      <div class="info">
+        <h2>Lịch sử &amp; Địa lý</h2>
+        <p>Dựng nước, giữ nước, đất nước và con người Việt Nam</p>
+      </div>
+      <div class="stat" id="stat-su"><span class="small">chuỗi ngày</span>—</div>
+    </a>
+  </div>
+  <p class="footer-note">Cố gắng ôn đều cả 3 môn mỗi ngày một chút nhé! 🌟</p>
+</div>
+<script>
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function computeDayStreak(history){
+  let streak=0;
+  let d=new Date();
+  let firstDay=true;
+  while(true){
+    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const entry=history[ds];
+    if(entry && entry.total>0){ streak++; }
+    else if(firstDay){ /* hôm nay chưa làm, không tính nhưng vẫn kiểm tra hôm qua */ }
+    else break;
+    firstDay=false;
+    d.setDate(d.getDate()-1);
+    if(streak>365) break;
+  }
+  return streak;
+}
+function renderStreak(storageKey, elId){
+  try{
+    const raw=localStorage.getItem(storageKey);
+    const el=document.getElementById(elId);
+    if(!raw){ el.innerHTML='<span class="small">chuỗi ngày</span>0'; return; }
+    const data=JSON.parse(raw);
+    const streak=computeDayStreak(data.history||{});
+    el.innerHTML=`<span class="small">chuỗi ngày</span>${streak}`;
+  }catch(e){ /* bỏ qua nếu chưa có dữ liệu */ }
+}
+renderStreak('hocmathe_progress_v1','stat-toan');
+renderStreak('hocvan_progress_v1','stat-van');
+renderStreak('hocsu_progress_v1','stat-su');
+</script>
+</body>
+</html>
