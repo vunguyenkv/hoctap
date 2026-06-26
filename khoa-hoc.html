@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vở Luyện Khoa Học Mùa Hè</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root{
+  --paper:#FBF8F1;
+  --grid-line:#DCE6F0;
+  --margin-red:#E2554F;
+  --ink:#2E3440;
+  --pencil-blue:#3B6EA5;
+  --highlight-yellow:#F4B93E;
+  --success-green:#4C9A6A;
+  --card-bg:#FFFFFF;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  background:#EDE8DD;
+  min-height:100vh;
+  padding:24px 16px 60px;
+}
+.page{
+  max-width:680px;
+  margin:0 auto;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--grid-line) 27px, var(--grid-line) 28px),
+    var(--paper);
+  border-radius:6px;
+  box-shadow:0 6px 24px rgba(46,52,64,0.12);
+  position:relative;
+  padding:28px 28px 28px 56px;
+  border:1px solid #EAE5DA;
+}
+.page::before{
+  content:'';
+  position:absolute;
+  left:40px; top:0; bottom:0;
+  width:2px;
+  background:var(--margin-red);
+  opacity:0.55;
+}
+.top-nav{margin:0 0 16px;}
+.top-nav a{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:0.88rem;
+  color:var(--pencil-blue); text-decoration:none;
+  padding:7px 16px; border-radius:999px; border:1.5px solid var(--pencil-blue);
+  background:#fff;
+}
+.top-nav a:hover{background:#EEF4FA;}
+
+.header h1{
+  font-family:'Patrick Hand',cursive;
+  font-size:2.1rem;
+  margin:0 0 4px;
+  color:var(--pencil-blue);
+}
+.header p.subtitle{
+  margin:0 0 20px;
+  color:#7a7468;
+  font-size:0.92rem;
+}
+
+.stats-row{
+  display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+}
+.stat-card{
+  flex:1; min-width:110px;
+  background:#F7F4EC;
+  border:1px solid #EAE5DA;
+  border-radius:10px;
+  padding:10px 12px;
+  text-align:center;
+}
+.stat-card.wide{flex:2; min-width:180px;}
+.stat-card .stat-value{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.6rem;
+  color:var(--pencil-blue);
+  line-height:1.2;
+}
+.stat-card .stat-label{
+  font-size:0.7rem; color:#9b9384; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px;
+}
+.week-chart{display:flex; gap:4px; justify-content:center; margin-top:6px; flex-wrap:wrap;}
+.week-cell{
+  width:26px; height:26px; border-radius:5px;
+  background:#fff; border:1px solid var(--grid-line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.6rem; color:#bbb; font-weight:700;
+}
+.week-cell.done.high{background:#DCEFE2; border-color:var(--success-green); color:var(--success-green);}
+.week-cell.done.mid{background:#FCEFC7; border-color:var(--highlight-yellow); color:#A07A1E;}
+.week-cell.done.low{background:#FBDAD8; border-color:var(--margin-red); color:var(--margin-red);}
+
+.tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.tab{
+  font-family:'Patrick Hand',cursive;
+  font-size:1.05rem;
+  padding:8px 16px;
+  border-radius:10px;
+  border:1.5px solid #EAE5DA;
+  background:#F7F4EC;
+  color:#9b9384;
+  cursor:pointer;
+  user-select:none;
+}
+.tab.active{
+  background:var(--pencil-blue);
+  color:#fff;
+  border-color:var(--pencil-blue);
+}
+
+.problem-card{
+  background:#FCFBF7;
+  border:1.5px dashed var(--grid-line);
+  border-radius:12px;
+  padding:26px 18px;
+  text-align:center;
+  margin-bottom:16px;
+}
+#problem-prompt{
+  font-size:1.25rem;
+  font-weight:700;
+  margin-bottom:6px;
+  line-height:1.5;
+  text-align:left;
+}
+
+#answer-area{margin-top:14px;}
+.mcq-options{display:flex; flex-direction:column; gap:10px;}
+.mcq-btn{
+  font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; text-align:left;
+  padding:12px 16px; border-radius:10px; border:2px solid var(--pencil-blue);
+  background:#fff; color:var(--ink); cursor:pointer;
+}
+.mcq-btn:hover:not(:disabled){background:#EEF4FA;}
+.mcq-btn:disabled{opacity:0.55; cursor:default;}
+.mcq-btn.picked{background:var(--pencil-blue); color:#fff;}
+
+.tf-row{display:flex; gap:16px; justify-content:center;}
+.tf-btn{
+  font-size:1.3rem; font-weight:800; padding:14px 34px;
+  border:2px solid var(--pencil-blue); border-radius:12px; background:#fff; color:var(--pencil-blue); cursor:pointer;
+}
+.tf-btn:hover:not(:disabled){background:#EEF4FA;}
+.tf-btn:disabled{opacity:0.55; cursor:default;}
+.tf-btn.picked{background:var(--pencil-blue); color:#fff;}
+
+.match-area{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; text-align:left;}
+.match-col{flex:1; min-width:140px; display:flex; flex-direction:column; gap:8px;}
+.match-item{
+  font-family:'Nunito',sans-serif; font-size:0.88rem; font-weight:700; text-align:left;
+  padding:9px 12px; border-radius:8px; border:2px solid var(--pencil-blue); background:#fff; color:var(--ink); cursor:pointer;
+}
+.match-item.right-item{border-color:var(--highlight-yellow); color:#A0701B;}
+.match-item:hover:not(:disabled){background:#EEF4FA;}
+.match-item.selected{background:var(--pencil-blue); color:#fff;}
+.match-item.assigned{background:#DCEFE2; border-color:var(--success-green); color:var(--success-green);}
+.match-item:disabled{opacity:0.4; cursor:default;}
+.match-hint{font-size:0.78rem; color:#9b9384; margin:0 0 10px;}
+
+.actions{display:flex; gap:12px; justify-content:center; margin-top:8px; flex-wrap:wrap;}
+.btn{
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem;
+  padding:11px 26px; border-radius:999px; border:none; cursor:pointer;
+}
+.btn-primary{background:var(--pencil-blue); color:#fff;}
+.btn-primary:disabled{background:#CBD6E1; cursor:default;}
+.btn-secondary{background:var(--highlight-yellow); color:#5A4313;}
+.btn-secondary:disabled{background:#F0E4C8; color:#c9bb98; cursor:default;}
+
+.feedback{margin-top:16px; min-height:8px;}
+.feedback.correct{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.feedback .stamp{animation: stamp-in 0.45s ease-out;}
+@keyframes stamp-in{
+  0%{ transform: scale(2) rotate(-15deg); opacity:0; }
+  60%{ transform: scale(0.9) rotate(8deg); opacity:1; }
+  100%{ transform: scale(1) rotate(-6deg); opacity:1; }
+}
+.feedback .fb-text{font-family:'Patrick Hand',cursive; font-size:1.35rem; color:var(--success-green); margin:0;}
+.feedback .milestone{font-weight:800; color:var(--highlight-yellow); margin:2px 0 0; font-size:0.95rem;}
+.feedback.incorrect{
+  background:#FCF6E8; border:1.5px solid var(--highlight-yellow); border-radius:10px; padding:14px 16px; text-align:left;
+}
+.feedback.incorrect .fb-text{font-family:'Nunito',sans-serif; font-weight:800; margin:0 0 8px; color:#A0701B; font-size:1rem;}
+.feedback .explain{
+  font-family:'Nunito',sans-serif; font-size:0.9rem; white-space:pre-wrap; background:#fff; border-radius:8px; padding:10px 12px; margin:0 0 8px; line-height:1.8; border:1px solid #F0E4C8;
+}
+.feedback .correct-answer{font-weight:800; margin:0; color:var(--pencil-blue);}
+
+.reset-row{text-align:right; margin-top:14px;}
+.reset-row a{font-size:0.72rem; color:#bbb3a4; text-decoration:underline; cursor:pointer;}
+
+.player-greeting{
+  font-family:'Patrick Hand',cursive; font-size:1.1rem; color:var(--success-green); margin:0 0 16px;
+}
+.start-screen{display:flex; flex-direction:column; gap:22px;}
+.start-field label{
+  display:block; font-family:'Patrick Hand',cursive; font-size:1.05rem; color:var(--pencil-blue); margin-bottom:8px;
+}
+.name-input{
+  width:100%; font-family:'Nunito',sans-serif; font-size:1rem; padding:10px 14px;
+  border:2px solid var(--pencil-blue); border-radius:8px; background:#fff; color:var(--ink);
+}
+.name-input:focus{outline:none; border-color:var(--highlight-yellow); box-shadow:0 0 0 3px rgba(244,185,62,0.25);}
+#practice-area{display:none;}
+
+@media (max-width:480px){
+  .page{padding:22px 16px 22px 38px;}
+  .page::before{left:24px;}
+  .header h1{font-size:1.7rem;}
+  #problem-prompt{font-size:1.1rem;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="top-nav"><a href="index.html">← Về trang chọn môn</a></p>
+  <div class="header">
+    <h1>Vở Luyện Khoa Học Mùa Hè 🔬</h1>
+    <p class="subtitle">Ôn Chất, Năng lượng, Thực vật-Động vật, Nấm, Con người-Sức khỏe, Sinh vật-Môi trường — theo sách Khoa học 4 (Chân Trời Sáng Tạo)</p>
+    <p class="player-greeting" id="player-greeting" style="display:none;"></p>
+  </div>
+
+  <div class="start-screen" id="start-screen">
+    <div class="start-field">
+      <label for="player-name">Tên của bé là gì?</label>
+      <input type="text" id="player-name" class="name-input" placeholder="Nhập tên của bé...">
+    </div>
+    <div class="start-field">
+      <label>Chọn chủ đề muốn luyện:</label>
+      <div class="tabs" id="start-tabs"></div>
+    </div>
+    <button class="btn btn-primary" id="start-btn" style="width:100%; font-size:1.1rem; padding:16px;">🚀 Bắt đầu luyện tập</button>
+  </div>
+
+  <div id="practice-area">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="today-stat">0/0</div>
+        <div class="stat-label">Đúng hôm nay</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="streak-stat">0 ngày</div>
+        <div class="stat-label">Chuỗi ngày ôn</div>
+      </div>
+      <div class="stat-card wide">
+        <div class="stat-label" style="margin-bottom:4px;">7 ngày gần đây</div>
+        <div class="week-chart" id="week-chart"></div>
+      </div>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="problem-card">
+      <div id="problem-prompt"></div>
+      <div id="answer-area"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="check-btn">Kiểm tra</button>
+      <button class="btn btn-secondary" id="next-btn" disabled>Câu tiếp theo →</button>
+    </div>
+
+    <div class="reset-row">
+      <a id="reset-link">Xóa tiến trình đã lưu</a>
+    </div>
+  </div>
+</div>
+
+<script src="khoa-hoc-data.js"></script>
+<script>
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=randInt(0,i); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function todayStr(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+const TOPICS = KHOAHOC_DATA.lop4.topics;
+const STORAGE_KEY='hockhoahoc_progress_v1';
+const state = {
+  topic: TOPICS[0].id,
+  currentQuestion:null,
+  lastIndexByTopic:{},
+  sessionStreak:0,
+  progress:{history:{}},
+  started:false,
+  playerName:'',
+  picked:null,
+  match:{assignments:[], rightOrder:[]}
+};
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      if(data.history) state.progress.history = data.history;
+      if(data.topic) state.topic = data.topic;
+      if(data.playerName) state.playerName = data.playerName;
+    }
+  }catch(e){ /* nothing saved yet */ }
+  if(!TOPICS.find(t=>t.id===state.topic)){ state.topic = TOPICS[0].id; }
+}
+function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({history:state.progress.history, topic:state.topic, playerName:state.playerName}));
+  }catch(e){ console.error('Storage error:', e); }
+}
+
+const PRAISES=['Chính xác! 🎉','Giỏi quá!','Tuyệt vời!','Làm đúng rồi nè!','Quá đỉnh!','Number one! 👏','Siêu sao Khoa học!'];
+function pickPraise(){ return PRAISES[randInt(0,PRAISES.length-1)]; }
+const ENCOURAGE_LINES=[
+  'Sai một chút thôi, não đang "tập gym" để mạnh hơn đó! 💪🧠',
+  'Không sao đâu, ngay cả nhà khoa học cũng từng phải thử nhiều lần mới đúng! 🧪',
+  'Lần sau bé sẽ nhớ ngay, cứ xem cách giải thích rồi ghi nhớ nha! 🍦',
+  'Sai cũng là một cách học — bộ não vừa "cập nhật phần mềm" xong đó! 🤖✨',
+  'Chưa đúng nhưng cố gắng là giỏi rồi, thử lại câu sau nha siêu nhân! 🦸'
+];
+function pickEncourage(){ return ENCOURAGE_LINES[randInt(0,ENCOURAGE_LINES.length-1)]; }
+
+function buildAnswerInputs(p){
+  if(p.type==='mcq'){
+    return `<div class="mcq-options">${p.options.map((opt,i)=>`<button class="mcq-btn" data-i="${i}">${opt}</button>`).join('')}</div>`;
+  }
+  if(p.type==='truefalse'){
+    return `<div class="tf-row">
+      <button class="tf-btn" data-v="true">Đúng</button>
+      <button class="tf-btn" data-v="false">Sai</button>
+    </div>`;
+  }
+  if(p.type==='match'){
+    state.match.rightOrder = shuffle(p.pairs.map(pr=>pr.right));
+    state.match.assignments = new Array(p.pairs.length).fill(null);
+    return renderMatchHTML(p);
+  }
+  return '';
+}
+function renderMatchHTML(p){
+  const leftHTML = p.pairs.map((pr,i)=>{
+    const a = state.match.assignments[i];
+    const cls = a ? 'match-item left-item assigned' : 'match-item left-item';
+    const label = a ? `${pr.left} → ${a}` : pr.left;
+    return `<button class="${cls}" data-i="${i}">${label}</button>`;
+  }).join('');
+  const rightHTML = state.match.rightOrder.map(r=>{
+    const used = state.match.assignments.includes(r);
+    return `<button class="match-item right-item" data-r="${encodeURIComponent(r)}" ${used?'disabled':''}>${r}</button>`;
+  }).join('');
+  return `<p class="match-hint">Chạm vào 1 ô bên trái, rồi chạm ô bên phải tương ứng để nối. Chạm lại ô đã nối để hủy.</p>
+    <div class="match-area">
+      <div class="match-col">${leftHTML}</div>
+      <div class="match-col">${rightHTML}</div>
+    </div>`;
+}
+function rerenderMatch(){
+  document.getElementById('answer-area').innerHTML = renderMatchHTML(state.currentQuestion);
+  bindMatchEvents();
+  const allFilled = state.match.assignments.every(a=>a!==null);
+  document.getElementById('check-btn').disabled = !allFilled;
+}
+function bindMatchEvents(){
+  document.querySelectorAll('.left-item').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const i=parseInt(btn.dataset.i);
+      if(state.match.assignments[i]!==null){
+        state.match.assignments[i]=null;
+        rerenderMatch();
+        return;
+      }
+      document.querySelectorAll('.left-item').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.picked = i;
+    });
+  });
+  document.querySelectorAll('.right-item').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(state.picked===null || state.picked===undefined) return;
+      const r=decodeURIComponent(btn.dataset.r);
+      state.match.assignments[state.picked]=r;
+      state.picked=null;
+      rerenderMatch();
+    });
+  });
+}
+function bindAnswerEvents(){
+  const p=state.currentQuestion;
+  if(p.type==='mcq'){
+    document.querySelectorAll('.mcq-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        state.picked=parseInt(btn.dataset.i);
+        checkAnswer();
+      });
+    });
+  } else if(p.type==='truefalse'){
+    document.querySelectorAll('.tf-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        state.picked = btn.dataset.v==='true';
+        checkAnswer();
+      });
+    });
+  } else if(p.type==='match'){
+    state.picked=null;
+    bindMatchEvents();
+  }
+}
+function disableAnswerArea(){
+  document.querySelectorAll('#answer-area button').forEach(el=>el.disabled=true);
+  document.getElementById('check-btn').disabled=true;
+}
+function formatCorrectAnswer(p){
+  if(p.type==='mcq') return p.options[p.answerIndex];
+  if(p.type==='truefalse') return p.answer ? 'Đúng' : 'Sai';
+  if(p.type==='match') return p.pairs.map(pr=>`${pr.left} → ${pr.right}`).join('\n');
+}
+function checkAnswer(){
+  const p=state.currentQuestion;
+  let correct=false;
+  if(p.type==='mcq'){
+    correct = state.picked===p.answerIndex;
+  } else if(p.type==='truefalse'){
+    correct = state.picked===p.answer;
+  } else if(p.type==='match'){
+    correct = p.pairs.every((pr,i)=>state.match.assignments[i]===pr.right);
+  }
+  updateStats(correct);
+  showFeedback(correct,p);
+}
+function stampSVG(){
+  return `<svg width="104" height="104" viewBox="0 0 104 104" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="52" cy="52" r="48" fill="none" stroke="#E2554F" stroke-width="3" stroke-dasharray="5 4"/>
+    <circle cx="52" cy="52" r="40" fill="none" stroke="#E2554F" stroke-width="1.5"/>
+    <text x="52" y="48" text-anchor="middle" font-family="'Patrick Hand',cursive" font-size="19" fill="#E2554F" font-weight="700">ĐÚNG</text>
+    <text x="52" y="71" text-anchor="middle" font-family="'Patrick Hand',cursive" font-size="19" fill="#E2554F" font-weight="700">RỒI!</text>
+  </svg>`;
+}
+function showFeedback(correct,p){
+  disableAnswerArea();
+  document.getElementById('next-btn').disabled=false;
+  const fb=document.getElementById('feedback');
+  if(correct){
+    fb.className='feedback correct';
+    let extra='';
+    if(state.sessionStreak>0 && state.sessionStreak%5===0){
+      extra=`<p class="milestone">🔥 ${state.sessionStreak} câu đúng liên tiếp!</p>`;
+    }
+    fb.innerHTML=`<div class="stamp">${stampSVG()}</div><p class="fb-text">${pickPraise()}</p>${extra}`;
+  } else {
+    fb.className='feedback incorrect';
+    fb.innerHTML=`<p class="fb-text">Chưa đúng rồi, mình cùng xem lại nhé 👇</p>
+      <pre class="explain">${p.explanation}</pre>
+      <p class="correct-answer">Đáp số đúng:\n${formatCorrectAnswer(p)}</p>
+      <p class="fb-text" style="margin-top:8px; font-size:0.95rem;">${pickEncourage()}</p>`;
+  }
+}
+function updateStats(correct){
+  const t=todayStr();
+  if(!state.progress.history[t]) state.progress.history[t]={correct:0,total:0};
+  state.progress.history[t].total++;
+  if(correct){ state.progress.history[t].correct++; state.sessionStreak++; }
+  else { state.sessionStreak=0; }
+  saveProgress();
+  renderStats();
+}
+function computeDayStreak(){
+  let streak=0;
+  let d=new Date();
+  let firstDay=true;
+  while(true){
+    const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const entry=state.progress.history[ds];
+    if(entry && entry.total>0){ streak++; }
+    else if(firstDay){ /* hôm nay chưa làm, không tính nhưng vẫn kiểm tra hôm qua */ }
+    else break;
+    firstDay=false;
+    d.setDate(d.getDate()-1);
+    if(streak>365) break;
+  }
+  return streak;
+}
+function renderWeekChart(){
+  const container=document.getElementById('week-chart');
+  container.innerHTML='';
+  const dayLabels=['CN','T2','T3','T4','T5','T6','T7'];
+  for(let i=6;i>=0;i--){
+    const dd=new Date();
+    dd.setDate(dd.getDate()-i);
+    const ds=`${dd.getFullYear()}-${String(dd.getMonth()+1).padStart(2,'0')}-${String(dd.getDate()).padStart(2,'0')}`;
+    const entry=state.progress.history[ds];
+    const div=document.createElement('div');
+    div.className='week-cell';
+    if(entry && entry.total>0){
+      const pct=entry.correct/entry.total;
+      div.classList.add('done', pct>=0.8?'high':pct>=0.5?'mid':'low');
+      div.title=`${entry.total} câu, đúng ${Math.round(pct*100)}%`;
+    }
+    div.textContent=dayLabels[dd.getDay()];
+    container.appendChild(div);
+  }
+}
+function renderStats(){
+  const t=todayStr();
+  const today=state.progress.history[t]||{correct:0,total:0};
+  document.getElementById('today-stat').textContent=`${today.correct}/${today.total}`;
+  document.getElementById('streak-stat').textContent=`${computeDayStreak()} ngày`;
+  renderWeekChart();
+}
+function buildTabsHTML(){
+  return TOPICS.map(t=>`<div class="tab${t.id===state.topic?' active':''}" data-topic="${t.id}">${t.name}</div>`).join('');
+}
+function pickQuestion(topicId){
+  const topic = TOPICS.find(t=>t.id===topicId);
+  const qs = topic.questions;
+  let idx = randInt(0,qs.length-1);
+  if(qs.length>1 && idx===state.lastIndexByTopic[topicId]){
+    idx = (idx+1)%qs.length;
+  }
+  state.lastIndexByTopic[topicId]=idx;
+  return qs[idx];
+}
+function nextProblem(){
+  state.picked=null;
+  state.currentQuestion=pickQuestion(state.topic);
+  renderProblem();
+}
+function renderProblem(){
+  const p=state.currentQuestion;
+  document.getElementById('problem-prompt').textContent=p.prompt;
+  document.getElementById('answer-area').innerHTML=buildAnswerInputs(p);
+  const fb=document.getElementById('feedback');
+  fb.innerHTML=''; fb.className='feedback';
+  const checkBtn=document.getElementById('check-btn');
+  if(p.type==='match'){
+    checkBtn.style.display='inline-block';
+    checkBtn.disabled=true;
+  } else {
+    checkBtn.style.display='none';
+  }
+  document.getElementById('next-btn').disabled=true;
+  bindAnswerEvents();
+}
+
+function wireTopicTabs(containerId){
+  document.querySelectorAll(`#${containerId} .tab`).forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      state.topic=tab.dataset.topic;
+      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.topic===state.topic));
+      saveProgress();
+      if(state.started) nextProblem();
+    });
+  });
+}
+function renderTabs(){
+  document.getElementById('start-tabs').innerHTML = buildTabsHTML();
+  document.getElementById('tabs').innerHTML = buildTabsHTML();
+  wireTopicTabs('start-tabs');
+  wireTopicTabs('tabs');
+}
+
+document.getElementById('start-btn').addEventListener('click',()=>{
+  const nameInput=document.getElementById('player-name');
+  state.playerName=nameInput.value.trim();
+  saveProgress();
+  const greeting=document.getElementById('player-greeting');
+  if(state.playerName){
+    greeting.textContent=`👋 Chào ${state.playerName}, cùng khám phá Khoa học nào!`;
+    greeting.style.display='block';
+  } else {
+    greeting.style.display='none';
+  }
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('practice-area').style.display='block';
+  state.started=true;
+  nextProblem();
+});
+document.getElementById('check-btn').addEventListener('click',checkAnswer);
+document.getElementById('next-btn').addEventListener('click',nextProblem);
+document.getElementById('reset-link').addEventListener('click', (e)=>{
+  e.preventDefault();
+  if(confirm('Xóa hết dữ liệu tiến trình đã lưu (điểm các ngày)? Không thể hoàn tác.')){
+    state.progress.history={};
+    saveProgress();
+    renderStats();
+  }
+});
+
+function init(){
+  loadProgress();
+  renderTabs();
+  renderStats();
+  if(state.playerName){
+    document.getElementById('player-name').value=state.playerName;
+  }
+}
+init();
+</script>
+</body>
+</html>

@@ -74,6 +74,52 @@ const VAN_DATA = {
             ],
             "answerIndex": 0,
             "explanation": "\"Xanh\" là tính từ chỉ màu sắc."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào là danh từ chỉ con vật?",
+            "options": [
+              "con mèo",
+              "chạy",
+              "đẹp",
+              "và"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Con mèo\" là danh từ, gọi tên một con vật."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào là động từ trong câu: \"Bạn Nam đang viết bài.\"?",
+            "options": [
+              "viết",
+              "Nam",
+              "bài",
+              "đang"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Viết\" là động từ, chỉ hoạt động của bạn Nam."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào là tính từ chỉ kích thước?",
+            "options": [
+              "to",
+              "chạy",
+              "ăn",
+              "và"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"To\" là tính từ, miêu tả kích thước của sự vật."
+          },
+          {
+            "type": "fillblank",
+            "prompt": "Điền từ thích hợp: Từ chỉ người, vật, hiện tượng, sự việc được gọi là ___.",
+            "answer": "danh từ",
+            "accept": [
+              "danh tu",
+              "danh từ"
+            ],
+            "explanation": "Đáp án: \"danh từ\". Ví dụ: học sinh, cái bàn, mưa, lễ hội..."
           }
         ]
       },
@@ -140,6 +186,48 @@ const VAN_DATA = {
             "prompt": "Câu kể dùng để nêu yêu cầu, đề nghị với người khác.",
             "answer": false,
             "explanation": "Sai. Câu kể dùng để kể, tả hoặc nêu nhận định. Câu khiến mới dùng để nêu yêu cầu, đề nghị."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Câu \"Lan đang làm gì đấy?\" thuộc kiểu câu nào?",
+            "options": [
+              "Câu hỏi",
+              "Câu kể",
+              "Câu cảm",
+              "Câu khiến"
+            ],
+            "answerIndex": 0,
+            "explanation": "Câu này dùng để hỏi, kết thúc bằng dấu chấm hỏi (?) nên là câu hỏi."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Câu \"Các em hãy giữ im lặng.\" thuộc kiểu câu nào?",
+            "options": [
+              "Câu khiến",
+              "Câu kể",
+              "Câu hỏi",
+              "Câu cảm"
+            ],
+            "answerIndex": 0,
+            "explanation": "Câu này nêu yêu cầu (có từ \"hãy\") nên là câu khiến."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Dấu câu nào thường dùng để kết thúc câu kể?",
+            "options": [
+              "Dấu chấm (.)",
+              "Dấu chấm hỏi (?)",
+              "Dấu chấm cảm (!)",
+              "Dấu hai chấm (:)"
+            ],
+            "answerIndex": 0,
+            "explanation": "Câu kể thường kết thúc bằng dấu chấm (.)."
+          },
+          {
+            "type": "truefalse",
+            "prompt": "Câu khiến thường có các từ như \"hãy\", \"đừng\", \"chớ\".",
+            "answer": true,
+            "explanation": "Đúng. Đây là những từ thường xuất hiện trong câu khiến để nêu yêu cầu, đề nghị."
           }
         ]
       },
@@ -218,6 +306,52 @@ const VAN_DATA = {
             ],
             "answerIndex": 0,
             "explanation": "\"Buồn\" có nghĩa ngược lại hoàn toàn với \"vui\"."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào đồng nghĩa với \"to lớn\"?",
+            "options": [
+              "khổng lồ",
+              "nhỏ bé",
+              "xinh xắn",
+              "mỏng manh"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Khổng lồ\" có nghĩa gần giống \"to lớn\"."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào trái nghĩa với \"sạch sẽ\"?",
+            "options": [
+              "bẩn",
+              "đẹp",
+              "gọn gàng",
+              "thơm"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Bẩn\" có nghĩa ngược lại hoàn toàn với \"sạch sẽ\"."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào đồng nghĩa với \"chăm chỉ\"?",
+            "options": [
+              "siêng năng",
+              "lười biếng",
+              "vui vẻ",
+              "nhanh nhẹn"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Siêng năng\" có nghĩa gần giống \"chăm chỉ\"."
+          },
+          {
+            "type": "fillblank",
+            "prompt": "Điền từ thích hợp: Từ trái nghĩa với \"ngắn\" là ___.",
+            "answer": "dài",
+            "accept": [
+              "dai",
+              "dài"
+            ],
+            "explanation": "Đáp án: \"dài\"."
           }
         ]
       },
@@ -236,6 +370,14 @@ const VAN_DATA = {
           {
             "type": "essay",
             "prompt": "Viết 2-4 câu kể về một ngày đi học vui vẻ của em."
+          },
+          {
+            "type": "essay",
+            "prompt": "Viết 2-4 câu kể về một người bạn thân của em."
+          },
+          {
+            "type": "essay",
+            "prompt": "Viết 2-4 câu tả khu vườn hoặc sân trường của em."
           }
         ]
       }
@@ -340,6 +482,48 @@ const VAN_DATA = {
             ],
             "answerIndex": 3,
             "explanation": "\"Thơm\" là tính từ, miêu tả đặc điểm (mùi) của bông hoa hồng."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào là quan hệ từ trong câu: \"Vì trời mưa nên em ở nhà.\"?",
+            "options": [
+              "vì",
+              "trời",
+              "mưa",
+              "nhà"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Vì\" là quan hệ từ, cùng với \"nên\" thể hiện quan hệ nguyên nhân - kết quả."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào là danh từ chỉ khái niệm (trừu tượng)?",
+            "options": [
+              "tình bạn",
+              "cái bàn",
+              "chạy",
+              "đẹp"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Tình bạn\" là danh từ chỉ khái niệm, không nhìn thấy hay cầm nắm được như đồ vật."
+          },
+          {
+            "type": "truefalse",
+            "prompt": "Đại từ có thể dùng để thay thế cho danh từ đã nói ở trước, tránh lặp lại.",
+            "answer": true,
+            "explanation": "Đúng. Đây là một trong những công dụng chính của đại từ."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Trong câu \"Nó học rất chăm.\", từ \"nó\" thuộc từ loại gì?",
+            "options": [
+              "Đại từ",
+              "Danh từ",
+              "Động từ",
+              "Tính từ"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Nó\" là đại từ, dùng để thay thế cho một danh từ (tên người/vật) đã được nói tới."
           }
         ]
       },
@@ -436,6 +620,47 @@ const VAN_DATA = {
               "buổi học ngoài trời bị hủy"
             ],
             "explanation": "Câu ghép chỉ nguyên nhân - kết quả thường có cấu trúc \"Vì... nên...\"."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Câu nào có hai vế câu được nối bằng quan hệ từ \"nhưng\"?",
+            "options": [
+              "Em thích đọc sách nhưng không có nhiều thời gian.",
+              "Em thích đọc sách.",
+              "Em đọc sách mỗi ngày.",
+              "Quyển sách này rất hay."
+            ],
+            "answerIndex": 0,
+            "explanation": "Câu này có hai vế (\"em thích đọc sách\" và \"không có nhiều thời gian\") nối bằng quan hệ từ \"nhưng\", thể hiện ý tương phản."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Trong câu ghép, các vế câu thường được nối với nhau bằng gì?",
+            "options": [
+              "Quan hệ từ hoặc dấu câu (dấu phẩy, dấu hai chấm...)",
+              "Chỉ bằng dấu chấm",
+              "Không thể nối với nhau",
+              "Chỉ bằng cách viết liền nhau"
+            ],
+            "answerIndex": 0,
+            "explanation": "Các vế trong câu ghép được nối bằng quan hệ từ (và, nhưng, vì, nên...) hoặc bằng dấu câu."
+          },
+          {
+            "type": "truefalse",
+            "prompt": "Câu đơn chỉ có một cụm chủ ngữ - vị ngữ.",
+            "answer": true,
+            "explanation": "Đúng. Câu đơn chỉ có một vế câu (một cụm chủ ngữ - vị ngữ), khác với câu ghép có hai vế trở lên."
+          },
+          {
+            "type": "fillblank",
+            "prompt": "Điền từ thích hợp: Câu do hai hoặc nhiều vế câu ghép lại với nhau được gọi là câu ___.",
+            "answer": "câu ghép",
+            "accept": [
+              "cau ghep",
+              "câu ghép",
+              "ghép"
+            ],
+            "explanation": "Đáp án: \"câu ghép\"."
           }
         ]
       },
@@ -536,6 +761,48 @@ const VAN_DATA = {
             ],
             "answerIndex": 1,
             "explanation": "Từ \"xanh\" được lặp lại để nhấn mạnh màu sắc đặc trưng, lâu đời của tre."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Câu \"Những ngôi sao thức ngoài kia chẳng bằng mẹ đã thức vì chúng con\" sử dụng biện pháp tu từ nào?",
+            "options": [
+              "So sánh",
+              "Nhân hóa",
+              "Điệp ngữ",
+              "Liệt kê"
+            ],
+            "answerIndex": 0,
+            "explanation": "Câu thơ so sánh sự thức đêm của những ngôi sao với sự thức đêm vì con của mẹ — đây là biện pháp so sánh."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Biện pháp nhân hóa thường gán cho vật, hiện tượng những đặc điểm, hành động của ai?",
+            "options": [
+              "Con người",
+              "Loài vật khác",
+              "Không gán cho ai",
+              "Chỉ gán cho cây cối"
+            ],
+            "answerIndex": 0,
+            "explanation": "Nhân hóa là gán đặc điểm, hành động, cảm xúc của con người cho vật, hiện tượng, con vật."
+          },
+          {
+            "type": "truefalse",
+            "prompt": "Điệp ngữ là việc lặp lại một từ ngữ để nhấn mạnh ý hoặc tạo nhịp điệu cho câu văn, câu thơ.",
+            "answer": true,
+            "explanation": "Đúng. Đây chính là đặc điểm và tác dụng của biện pháp điệp ngữ."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Câu \"Mặt trời nhô lên cười với muôn loài\" sử dụng biện pháp tu từ nào?",
+            "options": [
+              "Nhân hóa",
+              "So sánh",
+              "Liệt kê",
+              "Đảo ngữ"
+            ],
+            "answerIndex": 0,
+            "explanation": "Mặt trời được gán hành động \"cười\" giống con người — đây là biện pháp nhân hóa."
           }
         ]
       },
@@ -640,6 +907,52 @@ const VAN_DATA = {
               "từ nhiều nghĩa"
             ],
             "explanation": "Đáp án: \"nhiều nghĩa\" — nghĩa gốc \"chân người\" và nghĩa chuyển \"chân núi\" (phần dưới cùng) vẫn có liên hệ với nhau."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ \"sáng\" trong \"ánh sáng\" và \"sáng\" trong \"buổi sáng\" có quan hệ gì về nghĩa?",
+            "options": [
+              "Từ đồng âm",
+              "Từ nhiều nghĩa",
+              "Từ đồng nghĩa",
+              "Từ trái nghĩa"
+            ],
+            "answerIndex": 0,
+            "explanation": "Hai từ \"sáng\" này phát âm giống nhau nhưng nghĩa hoàn toàn khác nhau (độ sáng và buổi trong ngày) — đây là từ đồng âm."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào đồng nghĩa với \"yên tĩnh\"?",
+            "options": [
+              "im lặng",
+              "ồn ào",
+              "náo nhiệt",
+              "sôi động"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Im lặng\" có nghĩa gần giống \"yên tĩnh\"."
+          },
+          {
+            "type": "mcq",
+            "prompt": "Từ nào trái nghĩa với \"chân thật\"?",
+            "options": [
+              "giả dối",
+              "trung thực",
+              "ngay thẳng",
+              "thẳng thắn"
+            ],
+            "answerIndex": 0,
+            "explanation": "\"Giả dối\" có nghĩa ngược lại hoàn toàn với \"chân thật\"."
+          },
+          {
+            "type": "fillblank",
+            "prompt": "Điền từ thích hợp: Từ giống nhau về âm nhưng nghĩa khác nhau hoàn toàn được gọi là từ ___.",
+            "answer": "đồng âm",
+            "accept": [
+              "dong am",
+              "đồng âm"
+            ],
+            "explanation": "Đáp án: \"đồng âm\"."
           }
         ]
       },
@@ -662,6 +975,10 @@ const VAN_DATA = {
           {
             "type": "essay",
             "prompt": "Viết đoạn văn ngắn (3-5 câu) tả con vật nuôi mà em yêu thích nhất."
+          },
+          {
+            "type": "essay",
+            "prompt": "Viết đoạn văn ngắn (3-5 câu) kể về một chuyến đi chơi đáng nhớ của em."
           }
         ]
       }
